@@ -163,23 +163,33 @@ export default function Employees() {
                         {!emp.is_approved ? (
                           <span className="text-slate-400 italic text-xs">Waiting Approval</span>
                         ) : (
-                          <select 
-                            value={emp.today_attendance}
-                            onChange={(e) => markAttendance(emp.id, e.target.value)}
-                            className={`text-xs font-bold p-1 border uppercase ${
-                              emp.today_attendance === 'PRESENT' ? 'bg-green-100 text-green-800 border-green-200' : 
-                              emp.today_attendance === 'ABSENT' ? 'bg-red-100 text-red-800 border-red-200' :
-                              emp.today_attendance === 'LATE' ? 'bg-orange-100 text-orange-800 border-orange-200' :
-                              emp.today_attendance === 'LEAVE' ? 'bg-purple-100 text-purple-800 border-purple-200' :
-                              'bg-slate-100 text-slate-600 border-slate-300'
-                            }`}
-                          >
-                            <option value="UNMARKED">Unmarked</option>
-                            <option value="PRESENT">Present</option>
-                            <option value="ABSENT">Absent</option>
-                            <option value="LATE">Late</option>
-                            <option value="LEAVE">Leave</option>
-                          </select>
+                          <div className="flex flex-col items-center gap-1">
+                            <select 
+                              value={emp.today_attendance}
+                              onChange={(e) => markAttendance(emp.id, e.target.value)}
+                              className={`text-xs font-bold p-1 border uppercase rounded-sm ${
+                                emp.today_attendance === 'PENDING_VERIFICATION' ? 'bg-orange-100 text-orange-800 border-orange-200' :
+                                emp.today_attendance === 'PRESENT' ? 'bg-green-100 text-green-800 border-green-200' : 
+                                emp.today_attendance === 'ABSENT' ? 'bg-red-100 text-red-800 border-red-200' :
+                                emp.today_attendance === 'LATE' ? 'bg-orange-100 text-orange-800 border-orange-200' :
+                                emp.today_attendance === 'LEAVE' ? 'bg-purple-100 text-purple-800 border-purple-200' :
+                                'bg-slate-100 text-slate-600 border-slate-300'
+                              }`}
+                            >
+                              <option value="UNMARKED">Unmarked</option>
+                              <option value="PENDING_VERIFICATION">Pending Verification</option>
+                              <option value="PRESENT">Present</option>
+                              <option value="ABSENT">Absent</option>
+                              <option value="LATE">Late</option>
+                              <option value="LEAVE">Leave</option>
+                            </select>
+                            {emp.today_attendance_details?.mark_in_time && (
+                              <div className="text-[10px] text-slate-500 font-medium whitespace-nowrap">
+                                In: {new Date(emp.today_attendance_details.mark_in_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                                {emp.today_attendance_details.mark_out_time && ` | Out: ${new Date(emp.today_attendance_details.mark_out_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`}
+                              </div>
+                            )}
+                          </div>
                         )}
                       </td>
                       <td className="p-3 text-right space-x-2">

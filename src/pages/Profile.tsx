@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card'
 export function Profile() {
   const { user, token } = useAuthStore();
   const [history, setHistory] = useState<any[]>([]);
+  const [todayAttendance, setTodayAttendance] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [avatar, setAvatar] = useState<string | null>(user?.avatar || null);
 
@@ -62,9 +63,23 @@ export function Profile() {
     }
   };
 
+
   useEffect(() => {
     fetchHistory();
+    fetchTodayAttendance();
   }, []);
+
+  const fetchTodayAttendance = async () => {
+    try {
+      if (!user) return;
+      const res = await axios.get(`http://localhost:5000/api/attendance/my-attendance`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setTodayAttendance(res.data);
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   const fetchHistory = async () => {
     try {
@@ -77,6 +92,18 @@ export function Profile() {
       console.error(e);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const markAttendance = async (action: 'MARK_IN' | 'MARK_OUT') => {
+    try {
+      await axios.post('http://localhost:5000/api/attendance/mark', { action }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      fetchTodayAttendance();
+      fetchHistory();
+    } catch (e: any) {
+      alert(e.response?.data?.error || 'Failed to mark attendance');
     }
   };
 
@@ -121,7 +148,63 @@ export function Profile() {
           </CardContent>
         </Card>
 
-        <Card className="col-span-2 border-slate-200">
+        <Card className="col-span-1 border-slate-200">
+          <CardHeader><CardTitle>TODAY'S ATTENDANCE</CardTitle></CardHeader>
+          <CardContent className="space-y-4">
+            {loading ? (
+              <p className="text-xs text-slate-500 uppercase tracking-widest font-bold">Loading...</p>
+            ) : (
+              <div className="space-y-4">
+                <div className="p-4 rounded-sm border border-slate-200 bg-slate-50 text-center">
+                  <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Status</p>
+                  <p className={`font-black text-lg ${
+                    !todayAttendance ? 'text-slate-400' :
+                    todayAttendance.status === 'PENDING_VERIFICATION' ? 'text-orange-500' :
+                    todayAttendance.status === 'PRESENT' ? 'text-green-600' : 'text-blue-600'
+                  }`}>
+                    {!todayAttendance ? 'NOT MARKED IN' : todayAttendance.status.replace('_', ' ')}
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  <button 
+                    onClick={() => markAttendance('MARK_IN')}
+                    disabled={!!todayAttendance?.mark_in_time}
+                    className={`w-full py-3 font-bold uppercase tracking-widest rounded-sm transition-all ${
+                      todayAttendance?.mark_in_time 
+                        ? 'bg-slate-200 text-slate-400 cursor-not-allowed' 
+                        : 'bg-green-600 text-white hover:bg-green-700 shadow-md'
+                    }`}
+                  >
+                    {todayAttendance?.mark_in_time 
+                      ? `Marked In at ${new Date(todayAttendance.mark_in_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}` 
+                      : 'MARK IN NOW'
+                    }
+                  </button>
+
+                  <button 
+                    onClick={() => markAttendance('MARK_OUT')}
+                    disabled={!todayAttendance?.mark_in_time || !!todayAttendance?.mark_out_time}
+                    className={`w-full py-3 font-bold uppercase tracking-widest rounded-sm transition-all ${
+                      !todayAttendance?.mark_in_time || todayAttendance?.mark_out_time
+                        ? 'bg-slate-200 text-slate-400 cursor-not-allowed' 
+                        : 'bg-orange-600 text-white hover:bg-orange-700 shadow-md'
+                    }`}
+                  >
+                    {todayAttendance?.mark_out_time 
+                      ? `Marked Out at ${new Date(todayAttendance.mark_out_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}` 
+                      : 'MARK OUT NOW'
+                    }
+                  </button>
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+        <Card className="col-span-3 border-slate-200">
           <CardHeader><CardTitle>MY ATTENDANCE HISTORY</CardTitle></CardHeader>
           <CardContent>
             {loading ? (
