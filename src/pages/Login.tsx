@@ -8,6 +8,7 @@ import { Input } from '../components/ui/Input';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 
 export default function Login() {
+  const [loginType, setLoginType] = useState<'ADMIN' | 'EMPLOYEE'>('ADMIN');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -29,11 +30,24 @@ export default function Login() {
 
       try {
         const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
-        setAuth(res.data.token, res.data.user);
+        const user = res.data.user;
+
+        if (loginType === 'ADMIN' && user.role !== 'OWNER' && user.role !== 'ADMIN') {
+           setError('Access Denied. You do not have admin privileges.');
+           setIsLoading(false);
+           return;
+        }
+        if (loginType === 'EMPLOYEE' && (user.role === 'OWNER' || user.role === 'ADMIN')) {
+           setError('Please use the Admin login portal.');
+           setIsLoading(false);
+           return;
+        }
+
+        setAuth(res.data.token, user);
         navigate('/dashboard');
       } catch (err: any) {
         // Network error, CORS issue, or DB timeout (Internal server error)
-        if (email === 'admin@workshop.os' && password === 'admin123') {
+        if (email === 'admin@workshop.os' && password === 'admin123' && loginType === 'ADMIN') {
            console.warn("Backend unreachable or errored, falling back to mock login.");
            setAuth('mock-token', { id: '1', name: 'System Admin', role: 'OWNER', email: 'admin@workshop.os' });
            navigate('/dashboard');
@@ -70,9 +84,24 @@ export default function Login() {
             <CardTitle>AUTHORIZED ACCESS ONLY</CardTitle>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleLogin} className="space-y-5 pt-2">
+            <div className="flex bg-slate-100 p-1 mb-6 rounded-md">
+              <button 
+                className={`flex-1 py-2 text-sm font-bold uppercase tracking-widest transition-colors ${loginType === 'ADMIN' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                onClick={() => setLoginType('ADMIN')}
+              >
+                Admin
+              </button>
+              <button 
+                className={`flex-1 py-2 text-sm font-bold uppercase tracking-widest transition-colors ${loginType === 'EMPLOYEE' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                onClick={() => setLoginType('EMPLOYEE')}
+              >
+                Employee
+              </button>
+            </div>
+
+            <form onSubmit={handleLogin} className="space-y-5">
               <Input
-                label="Employee Email"
+                label={loginType === 'ADMIN' ? 'Admin Email' : 'Employee Email'}
                 type="email"
                 required
                 value={email}
