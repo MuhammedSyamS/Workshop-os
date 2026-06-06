@@ -2,15 +2,28 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
+import { Button } from '../components/ui/Button';
 
 export function CustomerBills() {
   const { token } = useAuthStore();
   const [bills, setBills] = useState<any[]>([]);
+  const [jobs, setJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [billModal, setBillModal] = useState<any>(null);
 
   useEffect(() => {
     fetchBills();
+    fetchJobs();
   }, []);
+
+  const fetchJobs = async () => {
+    try {
+      const res = await axios.get('http://localhost:5000/api/jobs', { headers: { Authorization: `Bearer ${token}` }});
+      setJobs(res.data);
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   const fetchBills = async () => {
     try {
@@ -23,10 +36,39 @@ export function CustomerBills() {
     }
   };
 
+  const openNewBillModal = () => {
+    setBillModal({
+      isOpen: true,
+      jobId: '',
+      lineItems: [{ description: 'Service Charge', quantity: 1, price: 0 }]
+    });
+  };
+
+  const generateBill = async () => {
+    if (!billModal.jobId) return alert('Please select a Job Order');
+    try {
+      await axios.post('http://localhost:5000/api/invoices', {
+        job_order_id: billModal.jobId,
+        type: 'BILL',
+        line_items: billModal.lineItems,
+        tax_rate: 0
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      alert('Bill Generated Successfully!');
+      setBillModal(null);
+      fetchBills();
+    } catch (e) {
+      console.error(e);
+      alert('Failed to generate bill');
+    }
+  };
+
   return (
     <div className="space-y-6 relative">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-heading font-extrabold tracking-widest text-slate-900 uppercase">Customer Bills</h1>
+        <Button variant="primary" onClick={openNewBillModal}>CREATE NEW BILL</Button>
       </div>
       
       <Card>
@@ -64,6 +106,115 @@ export function CustomerBills() {
           )}
         </CardContent>
       </Card>
+
+      {/* Bill Generator Modal */}
+      {billModal && billModal.isOpen && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-[60]">
+          <Card className="w-full max-w-2xl bg-white border-slate-200 shadow-xl max-h-[90vh] flex flex-col">
+            <CardContent className="p-6 flex-1 overflow-auto">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <h2 className="text-xl font-heading font-extrabold text-slate-900 mb-1">Generate Customer Bill</h2>
+                  <p className="text-sm font-bold text-blue-600">Create a non-tax estimate/bill</p>
+                </div>
+                <Button variant="outline" onClick={() => setBillModal(null)}>CLOSE</Button>
+              </div>
+
+              <div className="mb-6">
+                <label className="text-xs font-bold text-slate-500 uppercase block mb-2">Select Job Order</label>
+                <select 
+                  className="w-full bg-slate-50 border border-slate-200 p-2 text-sm text-slate-900"
+                  value={billModal.jobId}
+                  onChange={e => setBillModal({ ...billModal, jobId: e.target.value })}
+                >
+                  <option value="">-- Select a Job --</option>
+                  {jobs.map(job => (
+                    <option key={job.id} value={job.id}>
+                      Job #{job.id.slice(-6).toUpperCase()} - {job.customer?.name} ({job.vehicle?.reg_number})
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="mb-6">
+                <div className="flex justify-between items-center mb-4">
+                  <label className="text-xs font-bold text-slate-500 uppercase">Line Items (Parts, Labor)</label>
+                  <Button variant="outline" className="text-xs py-1" onClick={() => {
+                    setBillModal({
+                      ...billModal,
+                      lineItems: [...billModal.lineItems, { description: '', quantity: 1, price: 0 }]
+                    });
+                  }}>+ ADD ITEM</Button>
+                </div>
+
+                <div className="space-y-3">
+                  {billModal.lineItems.map((item: any, idx: number) => (
+                    <div key={idx} className="flex gap-2">
+                      <input 
+                        className="flex-1 bg-slate-50 border border-slate-200 p-2 text-sm" 
+                        placeholder="Description"
+                        value={item.description}
+                        onChange={e => {
+                          const newItems = [...billModal.lineItems];
+                          newItems[idx].description = e.target.value;
+                          setBillModal({...billModal, lineItems: newItems});
+                        }}
+                      />
+                      <input 
+                        className="w-20 bg-slate-50 border border-slate-200 p-2 text-sm" 
+                        type="number" 
+                        placeholder="Qty"
+                        value={item.quantity}
+                        onChange={e => {
+                          const newItems = [...billModal.lineItems];
+                          newItems[idx].quantity = Number(e.target.value);
+                          setBillModal({...billModal, lineItems: newItems});
+                        }}
+                      />
+                      <input 
+                        className="w-24 bg-slate-50 border border-slate-200 p-2 text-sm" 
+                        type="number" 
+                        placeholder="Price"
+                        value={item.price}
+                        onChange={e => {
+                          const newItems = [...billModal.lineItems];
+                          newItems[idx].price = Number(e.target.value);
+                          setBillModal({...billModal, lineItems: newItems});
+                        }}
+                      />
+                      <Button variant="danger" className="px-3" onClick={() => {
+                        const newItems = billModal.lineItems.filter((_: any, i: number) => i !== idx);
+                        setBillModal({...billModal, lineItems: newItems});
+                      }}>X</Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="border-t border-slate-200 pt-4 mt-6">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm font-bold text-slate-500">Subtotal:</span>
+                  <span className="font-bold text-slate-900">
+                    ₹{billModal.lineItems.reduce((sum: number, item: any) => sum + (item.quantity * item.price), 0).toFixed(2)}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center border-t border-slate-200 pt-4 mb-6">
+                  <span className="text-lg font-extrabold text-slate-900 uppercase">Total Due:</span>
+                  <span className="text-2xl font-black text-blue-600">
+                    ₹{(
+                      billModal.lineItems.reduce((sum: number, item: any) => sum + (item.quantity * item.price), 0)
+                    ).toFixed(2)}
+                  </span>
+                </div>
+
+                <Button variant="primary" className="w-full py-3" onClick={generateBill}>
+                  GENERATE BILL
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }

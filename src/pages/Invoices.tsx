@@ -2,15 +2,28 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
+import { Button } from '../components/ui/Button';
 
 export function Invoices() {
   const { token } = useAuthStore();
   const [invoices, setInvoices] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [jobs, setJobs] = useState<any[]>([]);
+  const [invoiceModal, setInvoiceModal] = useState<any>(null);
 
   useEffect(() => {
     fetchInvoices();
+    fetchJobs();
   }, []);
+
+  const fetchJobs = async () => {
+    try {
+      const res = await axios.get('http://localhost:5000/api/jobs', { headers: { Authorization: `Bearer ${token}` }});
+      setJobs(res.data);
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   const fetchInvoices = async () => {
     try {
@@ -23,10 +36,40 @@ export function Invoices() {
     }
   };
 
+  const openNewInvoiceModal = () => {
+    setInvoiceModal({
+      isOpen: true,
+      jobId: '',
+      lineItems: [{ description: 'Service Charge', quantity: 1, price: 0 }],
+      taxRate: 5
+    });
+  };
+
+  const generateInvoice = async () => {
+    if (!invoiceModal.jobId) return alert('Please select a Job Order');
+    try {
+      await axios.post('http://localhost:5000/api/invoices', {
+        job_order_id: invoiceModal.jobId,
+        type: 'INVOICE',
+        line_items: invoiceModal.lineItems,
+        tax_rate: invoiceModal.taxRate
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      alert('Invoice Generated Successfully!');
+      setInvoiceModal(null);
+      fetchInvoices();
+    } catch (e) {
+      console.error(e);
+      alert('Failed to generate invoice');
+    }
+  };
+
   return (
     <div className="space-y-6 relative">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-heading font-extrabold tracking-widest text-slate-900 uppercase">Invoices</h1>
+        <Button variant="primary" onClick={openNewInvoiceModal}>CREATE TAX INVOICE</Button>
       </div>
       
       <Card>
@@ -64,6 +107,130 @@ export function Invoices() {
           )}
         </CardContent>
       </Card>
+
+      {/* Invoice Generator Modal */}
+      {invoiceModal && invoiceModal.isOpen && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-[60]">
+          <Card className="w-full max-w-2xl bg-white border-slate-200 shadow-xl max-h-[90vh] flex flex-col">
+            <CardContent className="p-6 flex-1 overflow-auto">
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <h2 className="text-xl font-heading font-extrabold text-slate-900 mb-1">Generate Tax Invoice</h2>
+                  <p className="text-sm font-bold text-blue-600">Create an official GST invoice</p>
+                </div>
+                <Button variant="outline" onClick={() => setInvoiceModal(null)}>CLOSE</Button>
+              </div>
+
+              <div className="mb-6">
+                <label className="text-xs font-bold text-slate-500 uppercase block mb-2">Select Job Order</label>
+                <select 
+                  className="w-full bg-slate-50 border border-slate-200 p-2 text-sm text-slate-900"
+                  value={invoiceModal.jobId}
+                  onChange={e => setInvoiceModal({ ...invoiceModal, jobId: e.target.value })}
+                >
+                  <option value="">-- Select a Job --</option>
+                  {jobs.map(job => (
+                    <option key={job.id} value={job.id}>
+                      Job #{job.id.slice(-6).toUpperCase()} - {job.customer?.name} ({job.vehicle?.reg_number})
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="mb-6">
+                <div className="flex justify-between items-center mb-4">
+                  <label className="text-xs font-bold text-slate-500 uppercase">Line Items (Parts, Labor)</label>
+                  <Button variant="outline" className="text-xs py-1" onClick={() => {
+                    setInvoiceModal({
+                      ...invoiceModal,
+                      lineItems: [...invoiceModal.lineItems, { description: '', quantity: 1, price: 0 }]
+                    });
+                  }}>+ ADD ITEM</Button>
+                </div>
+
+                <div className="space-y-3">
+                  {invoiceModal.lineItems.map((item: any, idx: number) => (
+                    <div key={idx} className="flex gap-2">
+                      <input 
+                        className="flex-1 bg-slate-50 border border-slate-200 p-2 text-sm" 
+                        placeholder="Description"
+                        value={item.description}
+                        onChange={e => {
+                          const newItems = [...invoiceModal.lineItems];
+                          newItems[idx].description = e.target.value;
+                          setInvoiceModal({...invoiceModal, lineItems: newItems});
+                        }}
+                      />
+                      <input 
+                        className="w-20 bg-slate-50 border border-slate-200 p-2 text-sm" 
+                        type="number" 
+                        placeholder="Qty"
+                        value={item.quantity}
+                        onChange={e => {
+                          const newItems = [...invoiceModal.lineItems];
+                          newItems[idx].quantity = Number(e.target.value);
+                          setInvoiceModal({...invoiceModal, lineItems: newItems});
+                        }}
+                      />
+                      <input 
+                        className="w-24 bg-slate-50 border border-slate-200 p-2 text-sm" 
+                        type="number" 
+                        placeholder="Price"
+                        value={item.price}
+                        onChange={e => {
+                          const newItems = [...invoiceModal.lineItems];
+                          newItems[idx].price = Number(e.target.value);
+                          setInvoiceModal({...invoiceModal, lineItems: newItems});
+                        }}
+                      />
+                      <Button variant="danger" className="px-3" onClick={() => {
+                        const newItems = invoiceModal.lineItems.filter((_: any, i: number) => i !== idx);
+                        setInvoiceModal({...invoiceModal, lineItems: newItems});
+                      }}>X</Button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="border-t border-slate-200 pt-4 mt-6">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm font-bold text-slate-500">Subtotal:</span>
+                  <span className="font-bold text-slate-900">
+                    ₹{invoiceModal.lineItems.reduce((sum: number, item: any) => sum + (item.quantity * item.price), 0).toFixed(2)}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center mb-4">
+                  <span className="text-sm font-bold text-slate-500 flex items-center gap-2">
+                    Tax Rate (%):
+                    <input 
+                      type="number" 
+                      className="w-16 bg-slate-50 border border-slate-200 p-1 text-xs" 
+                      value={invoiceModal.taxRate}
+                      onChange={e => setInvoiceModal({...invoiceModal, taxRate: Number(e.target.value)})}
+                    />
+                  </span>
+                  <span className="font-bold text-slate-900">
+                    ₹{((invoiceModal.lineItems.reduce((sum: number, item: any) => sum + (item.quantity * item.price), 0) * invoiceModal.taxRate) / 100).toFixed(2)}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center border-t border-slate-200 pt-4 mb-6">
+                  <span className="text-lg font-extrabold text-slate-900 uppercase">Total Due:</span>
+                  <span className="text-2xl font-black text-blue-600">
+                    ₹{(
+                      invoiceModal.lineItems.reduce((sum: number, item: any) => sum + (item.quantity * item.price), 0) * 
+                      (1 + invoiceModal.taxRate / 100)
+                    ).toFixed(2)}
+                  </span>
+                </div>
+
+                <Button variant="primary" className="w-full py-3" onClick={generateInvoice}>
+                  GENERATE TAX INVOICE
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }
