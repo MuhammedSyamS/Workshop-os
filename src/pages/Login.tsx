@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import { Wrench } from 'lucide-react';
+import { Wrench, Eye, EyeOff } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
@@ -11,6 +11,7 @@ export default function Login() {
   const [loginType, setLoginType] = useState<'ADMIN' | 'EMPLOYEE'>('ADMIN');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   
@@ -111,11 +112,16 @@ export default function Login() {
               
               <Input
                 label="Security Key"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter password"
+                rightElement={
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="hover:text-blue-600 focus:outline-none">
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                }
               />
 
               {error && (

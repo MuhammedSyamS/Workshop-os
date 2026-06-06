@@ -9,7 +9,8 @@ export default function Employees() {
   const [employees, setEmployees] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
-  const [newEmp, setNewEmp] = useState({ name: '', role: '', phone: '', email: '', specialization: '', salary: '' });
+  const [showPassword, setShowPassword] = useState(false);
+  const [newEmp, setNewEmp] = useState({ name: '', role: '', phone: '', email: '', specialization: '', salary: '', password: '' });
   
   const [historyModal, setHistoryModal] = useState<{ isOpen: boolean; employee: any; history: any[] } | null>(null);
 
@@ -98,6 +99,15 @@ export default function Employees() {
                      value={newEmp.name} onChange={e => setNewEmp({...newEmp, name: e.target.value})} />
               <input placeholder="Email Address" className="bg-slate-50 border border-slate-200 text-slate-900 p-2 text-sm"
                      value={newEmp.email} onChange={e => setNewEmp({...newEmp, email: e.target.value})} />
+              
+              <div className="relative">
+                <input placeholder="Temporary Password" type={showPassword ? "text" : "password"} className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-2 pr-10 text-sm"
+                       value={newEmp.password || ''} onChange={e => setNewEmp({...newEmp, password: e.target.value})} />
+                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 hover:text-blue-600 focus:outline-none">
+                  {showPassword ? <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg> : <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>}
+                </button>
+              </div>
+
               <input placeholder="Phone Number" className="bg-slate-50 border border-slate-200 text-slate-900 p-2 text-sm"
                      value={newEmp.phone} onChange={e => setNewEmp({...newEmp, phone: e.target.value})} />
               <input placeholder="Role (e.g., Mechanic, Admin)" className="bg-slate-50 border border-slate-200 text-slate-900 p-2 text-sm"
