@@ -13,8 +13,9 @@ const MENU_ITEMS = [
   { path: '/customers', label: 'Customers', icon: Users },
   { path: '/vehicles', label: 'Vehicles', icon: CarFront },
   { path: '/employees', label: 'Employees', icon: Users },
-  { path: '/invoices', label: 'Invoices', icon: FileText },
-  { path: '/bills', label: 'Bills & Expenses', icon: Receipt },
+  { path: '/invoices', label: 'Tax Invoices', icon: FileText },
+  { path: '/customer-bills', label: 'Customer Bills', icon: Receipt },
+  { path: '/bills', label: 'Workshop Expenses', icon: Receipt },
   { path: '/inventory', label: 'Inventory', icon: Package },
   { path: '/schedule', label: 'Schedule', icon: Calendar },
   { path: '/reports', label: 'Reports', icon: BarChart3 },
@@ -35,7 +36,7 @@ export default function Layout() {
     if (isAdmin) {
       return item.path !== '/profile'; // Admins don't need the employee profile view
     } else {
-      const allowedForEmployee = ['/profile', '/jobs', '/customers', '/vehicles', '/employees', '/invoices', '/schedule'];
+      const allowedForEmployee = ['/profile', '/jobs', '/customers', '/vehicles', '/invoices', '/customer-bills', '/schedule'];
       return allowedForEmployee.includes(item.path);
     }
   });
