@@ -1,0 +1,46 @@
+import React, { forwardRef } from 'react';
+
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+  error?: string;
+  icon?: React.ReactNode;
+}
+
+export const Input = forwardRef<HTMLInputElement, InputProps>(
+  ({ className = '', label, error, icon, ...props }, ref) => {
+    return (
+      <div className="w-full">
+        {label && (
+          <label className="block text-xs font-heading font-bold text-slate-500 uppercase tracking-wide mb-1.5">
+            {label}
+          </label>
+        )}
+        <div className="relative">
+          {icon && (
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
+              {icon}
+            </div>
+          )}
+          <input
+            ref={ref}
+            className={`
+              w-full bg-slate-50 border border-slate-200 text-slate-900 text-sm
+              rounded-none placeholder-[#4A5568] transition-colors
+              focus:outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-600
+              disabled:opacity-50 disabled:bg-white disabled:cursor-not-allowed
+              ${icon ? 'pl-9' : 'px-3'} py-2
+              ${error ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : ''}
+              ${className}
+            `}
+            {...props}
+          />
+        </div>
+        {error && (
+          <p className="mt-1 text-xs text-red-500 font-medium">{error}</p>
+        )}
+      </div>
+    );
+  }
+);
+
+Input.displayName = 'Input';
