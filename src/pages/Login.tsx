@@ -34,12 +34,12 @@ export default function Login() {
         const user = res.data.user;
 
         if (loginType === 'ADMIN' && user.role !== 'OWNER' && user.role !== 'ADMIN') {
-           setError('Access Denied. You do not have admin privileges.');
+           setError('Access Denied: You are trying to log into the Admin portal, but your account is registered as an Employee. Please click the "Employee" tab above to log in.');
            setIsLoading(false);
            return;
         }
         if (loginType === 'EMPLOYEE' && (user.role === 'OWNER' || user.role === 'ADMIN')) {
-           setError('Please use the Admin login portal.');
+           setError('Access Denied: You are trying to log into the Employee portal, but you are an Admin. Please click the "Admin" tab above to log in.');
            setIsLoading(false);
            return;
         }
