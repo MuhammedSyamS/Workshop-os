@@ -16,7 +16,7 @@ export default function Navbar() {
             <Wrench size={18} className="text-white" />
           </div>
           <div className="hidden sm:block">
-            <h1 className="text-lg font-extrabold text-slate-900 leading-tight tracking-tight">Akhil Two Wheels</h1>
+            <h1 className="text-lg font-extrabold text-slate-900 leading-tight tracking-tight">Akhil Two Wheeler</h1>
             <p className="text-[11px] text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-500 font-bold uppercase tracking-widest">Job Board</p>
           </div>
         </div>

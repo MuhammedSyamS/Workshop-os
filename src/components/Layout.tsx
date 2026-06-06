@@ -37,7 +37,7 @@ export default function Layout() {
           <div className="w-8 h-8 bg-blue-600 flex items-center justify-center mr-3">
             <Wrench size={16} className="text-white" />
           </div>
-          <span className="font-heading font-extrabold tracking-widest uppercase text-sm">Akhil Two Wheels</span>
+          <span className="font-heading font-extrabold tracking-widest uppercase text-sm">Akhil Two Wheeler</span>
         </div>
 
         {/* Nav Links */}
