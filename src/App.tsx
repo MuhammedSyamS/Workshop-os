@@ -14,6 +14,7 @@ import { CustomerBills } from './pages/CustomerBills';
 import Bills from './pages/Bills';
 import { Reports } from './pages/Reports';
 import { Profile } from './pages/Profile';
+import PrintInvoice from './pages/PrintInvoice';
 import Layout from './components/Layout';
 
 export default function App() {
@@ -24,6 +25,9 @@ export default function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         
+        {/* Print Route without Sidebar Layout */}
+        <Route path="/print/invoice/:id" element={<PrintInvoice />} />
+
         <Route element={<Layout />}>
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="/profile" element={<Profile />} />

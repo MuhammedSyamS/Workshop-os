@@ -91,11 +91,14 @@ export default function JobBoard() {
   };
 
   const generateDocument = async () => {
+    const validItems = invoiceModal.lineItems.filter((item: any) => item.description.trim() !== '');
+    if (validItems.length === 0) return alert('Please add at least one valid line item with a description.');
+
     try {
       await axios.post('http://localhost:5000/api/invoices', {
         job_order_id: invoiceModal.job.id,
         type: invoiceModal.type,
-        line_items: invoiceModal.lineItems,
+        line_items: validItems,
         tax_rate: invoiceModal.type === 'INVOICE' ? invoiceModal.taxRate : 0
       }, {
         headers: { Authorization: `Bearer ${token}` }

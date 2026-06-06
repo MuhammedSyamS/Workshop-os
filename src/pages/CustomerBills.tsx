@@ -46,11 +46,14 @@ export function CustomerBills() {
 
   const generateBill = async () => {
     if (!billModal.jobId) return alert('Please select a Job Order');
+    const validItems = billModal.lineItems.filter((item: any) => item.description.trim() !== '');
+    if (validItems.length === 0) return alert('Please add at least one valid line item with a description.');
+
     try {
       await axios.post('http://localhost:5000/api/invoices', {
         job_order_id: billModal.jobId,
         type: 'BILL',
-        line_items: billModal.lineItems,
+        line_items: validItems,
         tax_rate: 0
       }, {
         headers: { Authorization: `Bearer ${token}` }
@@ -87,19 +90,33 @@ export function CustomerBills() {
                     <th className="p-3 font-bold">Job Card</th>
                     <th className="p-3 font-bold">Customer</th>
                     <th className="p-3 font-bold text-right">Total Amount</th>
+                    <th className="p-3 font-bold text-center">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {bills.map(bill => (
-                    <tr key={bill.id} className="border-b border-slate-200 hover:bg-blue-50 transition-colors text-sm text-slate-900">
-                      <td className="p-3 font-bold">{bill.invoice_number || bill.id?.slice(-6).toUpperCase()}</td>
-                      <td className="p-3 text-slate-500">#{bill.job_order?.id?.slice(-6).toUpperCase() || bill.job_order_id?.slice(-6).toUpperCase() || 'N/A'}</td>
-                      <td className="p-3 font-medium">{bill.job_order?.customer?.name || 'Unknown'}</td>
-                      <td className="p-3 text-right">
-                        <span className="font-bold text-blue-600">₹{(bill.total_amount || bill.total || 0).toFixed(2)}</span>
-                      </td>
-                    </tr>
-                  ))}
+                  {bills.map(bill => {
+                    const waText = encodeURIComponent(`Hello ${bill.job_order?.customer?.name || ''}, here is your bill for Job #${bill.job_order?.id?.slice(-6).toUpperCase() || ''}. Total: ₹${(bill.total_amount || bill.total || 0).toFixed(2)}.`);
+                    const waLink = `https://wa.me/${bill.job_order?.customer?.phone?.replace(/\D/g, '')}?text=${waText}`;
+
+                    return (
+                      <tr key={bill.id} className="border-b border-slate-200 hover:bg-blue-50 transition-colors text-sm text-slate-900">
+                        <td className="p-3 font-bold">{bill.invoice_number || bill.id?.slice(-6).toUpperCase()}</td>
+                        <td className="p-3 text-slate-500">#{bill.job_order?.id?.slice(-6).toUpperCase() || bill.job_order_id?.slice(-6).toUpperCase() || 'N/A'}</td>
+                        <td className="p-3 font-medium">{bill.job_order?.customer?.name || 'Unknown'}</td>
+                        <td className="p-3 text-right">
+                          <span className="font-bold text-blue-600">₹{(bill.total_amount || bill.total || 0).toFixed(2)}</span>
+                        </td>
+                        <td className="p-3 text-center space-x-2">
+                          <Button variant="outline" className="text-xs py-1 px-2" onClick={() => window.open(`/print/invoice/${bill.id}`, '_blank')}>
+                            PRINT / PDF
+                          </Button>
+                          <Button variant="primary" className="text-xs py-1 px-2" onClick={() => window.open(waLink, '_blank')}>
+                            WHATSAPP
+                          </Button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -134,6 +151,33 @@ export function CustomerBills() {
                     </option>
                   ))}
                 </select>
+
+                {billModal.jobId && (
+                  <div className="mt-4 p-4 bg-slate-50 border border-slate-200 rounded-sm">
+                    {(() => {
+                      const selectedJob = jobs.find(j => j.id === billModal.jobId);
+                      if (!selectedJob) return null;
+                      return (
+                        <div className="grid grid-cols-2 gap-4 text-sm">
+                          <div>
+                            <span className="text-slate-500 text-xs font-bold uppercase block mb-1">Customer</span>
+                            <div className="font-bold text-slate-900">{selectedJob.customer?.name}</div>
+                            <div className="text-slate-500">{selectedJob.customer?.phone}</div>
+                          </div>
+                          <div>
+                            <span className="text-slate-500 text-xs font-bold uppercase block mb-1">Vehicle</span>
+                            <div className="font-bold text-slate-900">{selectedJob.vehicle?.reg_number}</div>
+                            <div className="text-slate-500">{selectedJob.vehicle?.make} {selectedJob.vehicle?.model}</div>
+                          </div>
+                          <div className="col-span-2">
+                            <span className="text-slate-500 text-xs font-bold uppercase block mb-1">Complaint / Issue</span>
+                            <div className="text-slate-900">{selectedJob.complaint}</div>
+                          </div>
+                        </div>
+                      );
+                    })()}
+                  </div>
+                )}
               </div>
 
               <div className="mb-6">
