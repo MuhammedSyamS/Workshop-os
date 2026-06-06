@@ -87,7 +87,7 @@ export function Invoices() {
                       <td className="p-3 text-slate-500">#{inv.job_order?.id?.slice(-6).toUpperCase() || inv.job_order_id?.slice(-6).toUpperCase() || 'N/A'}</td>
                       <td className="p-3 font-medium">{inv.job_order?.customer?.name || 'Unknown'}</td>
                       <td className="p-3 text-center">
-                        <Badge variant={inv.status === 'PAID' ? 'success' : 'warning'}>{inv.status}</Badge>
+                        <Badge variant={inv.status === 'PAID' ? 'emerald' : 'amber'}>{inv.status}</Badge>
                       </td>
                       <td className="p-3 text-right">
                         <div className="flex flex-col items-end">

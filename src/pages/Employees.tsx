@@ -37,7 +37,7 @@ export default function Employees() {
         headers: { Authorization: `Bearer ${token}` }
       });
       setIsAdding(false);
-      setNewEmp({ name: '', role: '', phone: '', email: '', specialization: '', salary: '' });
+      setNewEmp({ name: '', role: '', phone: '', email: '', specialization: '', salary: '', password: '' });
       fetchEmployees();
     } catch (e) {
       console.error(e);
