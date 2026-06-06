@@ -7,6 +7,7 @@ import { Input } from '../components/ui/Input';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 
 export default function Signup() {
+  const [signupType, setSignupType] = useState<'ADMIN' | 'EMPLOYEE'>('EMPLOYEE');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -21,8 +22,16 @@ export default function Signup() {
     setIsLoading(true);
 
     try {
-      // Assuming a signup route exists, if not, it will fail gracefully
-      await axios.post('http://localhost:5000/api/auth/signup', { name, email, password });
+      const roleMap = {
+        'ADMIN': 'ADMIN',
+        'EMPLOYEE': 'MECHANIC'
+      };
+      await axios.post('http://localhost:5000/api/auth/signup', { 
+        name, 
+        email, 
+        password, 
+        role: roleMap[signupType] 
+      });
       navigate('/login');
     } catch (err: any) {
       setError(err.response?.data?.error || 'Failed to connect to server. Signup might not be implemented.');
