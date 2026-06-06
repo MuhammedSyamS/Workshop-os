@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { Wrench } from 'lucide-react';
-import { useAuthStore } from '../store/authStore';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
@@ -23,7 +22,7 @@ export default function Signup() {
 
     try {
       // Assuming a signup route exists, if not, it will fail gracefully
-      const res = await axios.post('http://localhost:5000/api/auth/signup', { name, email, password });
+      await axios.post('http://localhost:5000/api/auth/signup', { name, email, password });
       navigate('/login');
     } catch (err: any) {
       setError(err.response?.data?.error || 'Failed to connect to server. Signup might not be implemented.');
