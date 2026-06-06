@@ -10,6 +10,7 @@ export default function Signup() {
   const [signupType, setSignupType] = useState<'ADMIN' | 'EMPLOYEE'>('EMPLOYEE');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -29,6 +30,7 @@ export default function Signup() {
       await axios.post('http://localhost:5000/api/auth/signup', { 
         name, 
         email, 
+        phone,
         password, 
         role: roleMap[signupType] 
       });
@@ -91,6 +93,15 @@ export default function Signup() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
+              />
+
+              <Input
+                label="Phone Number"
+                type="tel"
+                required
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="Enter phone number"
               />
               
               <Input
