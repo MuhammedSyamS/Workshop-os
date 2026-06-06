@@ -96,10 +96,11 @@ export function Invoices() {
                 </thead>
                 <tbody>
                   {invoices.map(inv => {
-                    const waText = encodeURIComponent(`Hello ${inv.job_order?.customer?.name || ''}, here is your tax invoice for Job #${inv.job_order?.id?.slice(-6).toUpperCase() || ''}. Total: ₹${(inv.total_amount || inv.total || 0).toFixed(2)}.`);
+                    const invUrl = `${window.location.origin}/print/invoice/${inv.id}`;
+                    const waText = encodeURIComponent(`Hello ${inv.job_order?.customer?.name || ''},\n\nHere is your official Tax Invoice for Job #${inv.job_order?.id?.slice(-6).toUpperCase() || ''}.\n*Total Amount:* ₹${(inv.total_amount || inv.total || 0).toFixed(2)}\n\n*View & Download your Invoice here:*\n${invUrl}\n\nThank you for choosing us!`);
                     let cleanPhone = (inv.job_order?.customer?.phone || '').replace(/\D/g, '');
                     if (cleanPhone.length === 10) cleanPhone = '91' + cleanPhone;
-                    const waLink = `https://wa.me/${cleanPhone}?text=${waText}`;
+                    const waLink = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${waText}`;
 
                     return (
                       <tr key={inv.id} className="border-b border-slate-200 hover:bg-blue-50 transition-colors text-sm text-slate-900">
