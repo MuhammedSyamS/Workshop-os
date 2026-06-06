@@ -44,7 +44,7 @@ export default function Login() {
         }
 
         setAuth(res.data.token, user);
-        navigate('/dashboard');
+        navigate(user.role === 'OWNER' || user.role === 'ADMIN' ? '/dashboard' : '/profile');
       } catch (err: any) {
         // Network error, CORS issue, or DB timeout (Internal server error)
         if (email === 'admin@workshop.os' && password === 'admin123' && loginType === 'ADMIN') {

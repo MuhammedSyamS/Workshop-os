@@ -11,6 +11,7 @@ import { Inventory } from './pages/Inventory';
 import { Schedule } from './pages/Schedule';
 import { Invoices } from './pages/Invoices';
 import { Reports } from './pages/Reports';
+import { Profile } from './pages/Profile';
 import Layout from './components/Layout';
 
 export default function App() {
@@ -23,6 +24,7 @@ export default function App() {
         
         <Route element={<Layout />}>
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/jobs" element={<JobBoard />} />
           <Route path="/customers" element={<Customers />} />

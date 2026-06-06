@@ -68,6 +68,18 @@ export default function Employees() {
     }
   };
 
+  const approveEmployee = async (id: string) => {
+    try {
+      await axios.patch(`http://localhost:5000/api/employees/${id}/approve`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      fetchEmployees();
+    } catch (e) {
+      console.error(e);
+      alert('Failed to approve employee');
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-6">
@@ -115,36 +127,46 @@ export default function Employees() {
                     <th className="p-3 font-bold">Name</th>
                     <th className="p-3 font-bold">Role</th>
                     <th className="p-3 font-bold">Phone</th>
-                    <th className="p-3 font-bold text-center">Today's Attendance</th>
+                    <th className="p-3 font-bold text-center">Status / Attendance</th>
                     <th className="p-3 font-bold text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   {employees.map(emp => (
                     <tr key={emp.id} className="border-b border-slate-200 hover:bg-blue-50 transition-colors text-sm text-slate-900">
-                      <td className="p-3 font-bold">{emp.name}</td>
+                      <td className="p-3 font-bold">
+                        {emp.name}
+                        {!emp.is_approved && <span className="ml-2 bg-red-100 text-red-600 text-[10px] px-2 py-0.5 rounded uppercase font-bold tracking-widest">Pending</span>}
+                      </td>
                       <td className="p-3 text-slate-500">{emp.role}</td>
                       <td className="p-3 text-slate-500">{emp.phone}</td>
                       <td className="p-3 text-center">
-                        <select 
-                          value={emp.today_attendance}
-                          onChange={(e) => markAttendance(emp.id, e.target.value)}
-                          className={`text-xs font-bold p-1 border uppercase ${
-                            emp.today_attendance === 'PRESENT' ? 'bg-green-100 text-green-800 border-green-200' : 
-                            emp.today_attendance === 'ABSENT' ? 'bg-red-100 text-red-800 border-red-200' :
-                            emp.today_attendance === 'LATE' ? 'bg-orange-100 text-orange-800 border-orange-200' :
-                            emp.today_attendance === 'LEAVE' ? 'bg-purple-100 text-purple-800 border-purple-200' :
-                            'bg-slate-100 text-slate-600 border-slate-300'
-                          }`}
-                        >
-                          <option value="UNMARKED">Unmarked</option>
-                          <option value="PRESENT">Present</option>
-                          <option value="ABSENT">Absent</option>
-                          <option value="LATE">Late</option>
-                          <option value="LEAVE">Leave</option>
-                        </select>
+                        {!emp.is_approved ? (
+                          <span className="text-slate-400 italic text-xs">Waiting Approval</span>
+                        ) : (
+                          <select 
+                            value={emp.today_attendance}
+                            onChange={(e) => markAttendance(emp.id, e.target.value)}
+                            className={`text-xs font-bold p-1 border uppercase ${
+                              emp.today_attendance === 'PRESENT' ? 'bg-green-100 text-green-800 border-green-200' : 
+                              emp.today_attendance === 'ABSENT' ? 'bg-red-100 text-red-800 border-red-200' :
+                              emp.today_attendance === 'LATE' ? 'bg-orange-100 text-orange-800 border-orange-200' :
+                              emp.today_attendance === 'LEAVE' ? 'bg-purple-100 text-purple-800 border-purple-200' :
+                              'bg-slate-100 text-slate-600 border-slate-300'
+                            }`}
+                          >
+                            <option value="UNMARKED">Unmarked</option>
+                            <option value="PRESENT">Present</option>
+                            <option value="ABSENT">Absent</option>
+                            <option value="LATE">Late</option>
+                            <option value="LEAVE">Leave</option>
+                          </select>
+                        )}
                       </td>
-                      <td className="p-3 text-right">
+                      <td className="p-3 text-right space-x-2">
+                        {!emp.is_approved && (
+                          <Button variant="primary" onClick={() => approveEmployee(emp.id)} className="text-xs py-1 px-3">APPROVE</Button>
+                        )}
                         <Button variant="outline" onClick={() => viewHistory(emp)} className="text-xs py-1 px-3">HISTORY</Button>
                       </td>
                     </tr>

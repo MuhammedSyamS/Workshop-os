@@ -2,11 +2,12 @@
 import { Outlet, Navigate, Link, useLocation } from 'react-router-dom';
 import { 
   Wrench, LayoutDashboard, Users, CarFront, FileText, 
-  Package, Calendar, BarChart3, Settings, LogOut 
+  Package, Calendar, BarChart3, Settings, LogOut, UserCircle 
 } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 
 const MENU_ITEMS = [
+  { path: '/profile', label: 'My Profile', icon: UserCircle },
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/jobs', label: 'Job Orders', icon: Wrench },
   { path: '/customers', label: 'Customers', icon: Users },
@@ -27,6 +28,17 @@ export default function Layout() {
     return <Navigate to="/login" replace />;
   }
 
+  const isAdmin = user.role === 'OWNER' || user.role === 'ADMIN';
+
+  const visibleMenuItems = MENU_ITEMS.filter(item => {
+    if (isAdmin) {
+      return item.path !== '/profile'; // Admins don't need the employee profile view
+    } else {
+      const allowedForEmployee = ['/profile', '/jobs', '/customers', '/vehicles', '/employees', '/invoices', '/schedule'];
+      return allowedForEmployee.includes(item.path);
+    }
+  });
+
   return (
     <div className="flex h-screen bg-slate-50 text-slate-900 overflow-hidden">
       
@@ -43,7 +55,7 @@ export default function Layout() {
         {/* Nav Links */}
         <nav className="flex-1 overflow-y-auto py-4">
           <ul className="space-y-1 px-3">
-            {MENU_ITEMS.map((item) => {
+            {visibleMenuItems.map((item) => {
               const isActive = location.pathname.startsWith(item.path);
               return (
                 <li key={item.path}>
