@@ -97,7 +97,9 @@ export function Invoices() {
                 <tbody>
                   {invoices.map(inv => {
                     const waText = encodeURIComponent(`Hello ${inv.job_order?.customer?.name || ''}, here is your tax invoice for Job #${inv.job_order?.id?.slice(-6).toUpperCase() || ''}. Total: ₹${(inv.total_amount || inv.total || 0).toFixed(2)}.`);
-                    const waLink = `https://wa.me/${inv.job_order?.customer?.phone?.replace(/\D/g, '')}?text=${waText}`;
+                    let cleanPhone = (inv.job_order?.customer?.phone || '').replace(/\D/g, '');
+                    if (cleanPhone.length === 10) cleanPhone = '91' + cleanPhone;
+                    const waLink = `https://wa.me/${cleanPhone}?text=${waText}`;
 
                     return (
                       <tr key={inv.id} className="border-b border-slate-200 hover:bg-blue-50 transition-colors text-sm text-slate-900">

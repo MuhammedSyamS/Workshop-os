@@ -6,7 +6,7 @@ export default function Dashboard() {
     <div className="space-y-6">
       
       {/* KPI Row */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
         {[
           { label: 'Active Jobs', val: '24' },
           { label: 'Today Revenue', val: '₹3,450' },

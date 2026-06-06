@@ -96,7 +96,9 @@ export function CustomerBills() {
                 <tbody>
                   {bills.map(bill => {
                     const waText = encodeURIComponent(`Hello ${bill.job_order?.customer?.name || ''}, here is your bill for Job #${bill.job_order?.id?.slice(-6).toUpperCase() || ''}. Total: ₹${(bill.total_amount || bill.total || 0).toFixed(2)}.`);
-                    const waLink = `https://wa.me/${bill.job_order?.customer?.phone?.replace(/\D/g, '')}?text=${waText}`;
+                    let cleanPhone = (bill.job_order?.customer?.phone || '').replace(/\D/g, '');
+                    if (cleanPhone.length === 10) cleanPhone = '91' + cleanPhone;
+                    const waLink = `https://wa.me/${cleanPhone}?text=${waText}`;
 
                     return (
                       <tr key={bill.id} className="border-b border-slate-200 hover:bg-blue-50 transition-colors text-sm text-slate-900">

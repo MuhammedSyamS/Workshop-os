@@ -11,12 +11,11 @@ export default function PrintInvoice() {
   useEffect(() => {
     const fetchDoc = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/invoices', {
+        const res = await axios.get(`http://localhost:5000/api/invoices/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        const doc = res.data.find((d: any) => d.id === id);
-        if (doc) {
-          setData(doc);
+        if (res.data) {
+          setData(res.data);
           setTimeout(() => {
             window.print();
           }, 500);
@@ -25,7 +24,7 @@ export default function PrintInvoice() {
         console.error(e);
       }
     };
-    fetchDoc();
+    if (id) fetchDoc();
   }, [id, token]);
 
   if (!data) return <div className="p-8 font-bold font-heading text-xl">Loading Document...</div>;
@@ -33,16 +32,16 @@ export default function PrintInvoice() {
   const isInvoice = data.type === 'INVOICE';
 
   return (
-    <div className="bg-white text-black p-8 max-w-4xl mx-auto font-sans min-h-screen">
+    <div className="bg-white text-black p-4 sm:p-8 max-w-4xl mx-auto font-sans min-h-screen">
       {/* Header */}
-      <div className="flex justify-between items-start border-b-2 border-black pb-6 mb-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start border-b-2 border-black pb-6 mb-6 gap-4">
         <div>
-          <h1 className="text-4xl font-black uppercase tracking-tighter mb-2">WORKSHOP OS</h1>
+          <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tighter mb-2">WORKSHOP OS</h1>
           <p className="text-sm font-medium">123 Auto Street, Motor City</p>
           <p className="text-sm font-medium">Phone: +91 9876543210 | GSTIN: 22AAAAA0000A1Z5</p>
         </div>
-        <div className="text-right">
-          <h2 className="text-3xl font-bold uppercase tracking-widest text-slate-800">
+        <div className="text-left sm:text-right">
+          <h2 className="text-2xl sm:text-3xl font-bold uppercase tracking-widest text-slate-800">
             {isInvoice ? 'TAX INVOICE' : 'ESTIMATE / BILL'}
           </h2>
           <p className="font-bold text-lg mt-2">#{data.invoice_number || data.id.slice(-6).toUpperCase()}</p>
@@ -51,7 +50,7 @@ export default function PrintInvoice() {
       </div>
 
       {/* Customer & Vehicle Info */}
-      <div className="grid grid-cols-2 gap-12 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12 mb-8">
         <div>
           <h3 className="font-bold text-sm uppercase tracking-widest border-b border-black pb-1 mb-3">Billed To</h3>
           <p className="font-bold text-lg">{data.job_order?.customer?.name || 'Walk-in Customer'}</p>
