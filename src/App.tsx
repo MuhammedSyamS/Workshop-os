@@ -10,6 +10,7 @@ import Employees from './pages/Employees';
 import { Inventory } from './pages/Inventory';
 import { Schedule } from './pages/Schedule';
 import { Invoices } from './pages/Invoices';
+import Bills from './pages/Bills';
 import { Reports } from './pages/Reports';
 import { Profile } from './pages/Profile';
 import Layout from './components/Layout';
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="/vehicles" element={<Vehicles />} />
           <Route path="/employees" element={<Employees />} />
           <Route path="/invoices" element={<Invoices />} />
+          <Route path="/bills" element={<Bills />} />
           <Route path="/inventory" element={<Inventory />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/reports" element={<Reports />} />

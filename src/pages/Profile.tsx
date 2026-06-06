@@ -7,6 +7,60 @@ export function Profile() {
   const { user, token } = useAuthStore();
   const [history, setHistory] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [avatar, setAvatar] = useState<string | null>(user?.avatar || null);
+
+  useEffect(() => {
+    if (user?.avatar) setAvatar(user.avatar);
+  }, [user]);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const MAX_WIDTH = 150;
+        const MAX_HEIGHT = 150;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(img, 0, 0, width, height);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+        
+        uploadAvatar(dataUrl);
+      };
+      img.src = event.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const uploadAvatar = async (base64: string) => {
+    try {
+      await axios.patch(`http://localhost:5000/api/employees/${user?.id}/avatar`, { avatar: base64 }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setAvatar(base64);
+    } catch(e) {
+      alert('Failed to upload avatar');
+    }
+  };
 
   useEffect(() => {
     fetchHistory();
@@ -35,18 +89,34 @@ export function Profile() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="col-span-1 border-slate-200">
           <CardHeader><CardTitle>PERSONAL DETAILS</CardTitle></CardHeader>
-          <CardContent className="space-y-4 pt-2">
-            <div>
-              <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Full Name</p>
-              <p className="text-lg font-bold text-slate-900">{user?.name}</p>
+          <CardContent className="space-y-6 pt-2">
+            <div className="flex flex-col items-center mb-4">
+              <div className="w-24 h-24 rounded-full bg-slate-200 overflow-hidden mb-3 border-4 border-white shadow-sm flex items-center justify-center">
+                {avatar ? (
+                  <img src={avatar} alt="Profile" className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-3xl font-bold text-slate-400">{user?.name?.[0]?.toUpperCase()}</span>
+                )}
+              </div>
+              <label className="cursor-pointer text-xs font-bold text-blue-600 hover:text-blue-800 uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full">
+                Upload Photo
+                <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+              </label>
             </div>
-            <div>
-              <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Role</p>
-              <p className="text-sm font-bold text-blue-600 uppercase">{user?.role}</p>
-            </div>
-            <div>
-              <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Email Address</p>
-              <p className="text-sm text-slate-900">{user?.email}</p>
+            
+            <div className="space-y-4">
+              <div>
+                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Full Name</p>
+                <p className="text-lg font-bold text-slate-900">{user?.name}</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Role</p>
+                <p className="text-sm font-bold text-blue-600 uppercase">{user?.role}</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Email Address</p>
+                <p className="text-sm text-slate-900">{user?.email}</p>
+              </div>
             </div>
           </CardContent>
         </Card>

@@ -83,7 +83,7 @@ export function Inventory() {
                           {p.stock_qty}
                         </span>
                       </td>
-                      <td className="p-3 text-right font-medium">${p.unit_cost.toFixed(2)}</td>
+                      <td className="p-3 text-right font-medium">₹{p.unit_cost.toFixed(2)}</td>
                       <td className="p-3 text-center space-x-2">
                         <Button variant="outline" className="px-2 py-0.5 text-xs" onClick={() => updateStock(p.id, -1)}>-</Button>
                         <Button variant="outline" className="px-2 py-0.5 text-xs" onClick={() => updateStock(p.id, 1)}>+</Button>
@@ -111,7 +111,7 @@ export function Inventory() {
                 <div className="flex gap-4">
                   <input placeholder="Initial Stock Qty" type="number" className="flex-1 bg-slate-50 border border-slate-200 text-slate-900 p-2 text-sm"
                          value={newPart.stock_qty} onChange={e => setNewPart({...newPart, stock_qty: e.target.value})} />
-                  <input placeholder="Unit Cost ($)" type="number" step="0.01" className="flex-1 bg-slate-50 border border-slate-200 text-slate-900 p-2 text-sm"
+                  <input placeholder="Unit Cost (₹)" type="number" step="0.01" className="flex-1 bg-slate-50 border border-slate-200 text-slate-900 p-2 text-sm"
                          value={newPart.unit_cost} onChange={e => setNewPart({...newPart, unit_cost: e.target.value})} />
                 </div>
                 <input placeholder="Low Stock Reorder Level" type="number" className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-2 text-sm"

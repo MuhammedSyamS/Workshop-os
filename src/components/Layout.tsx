@@ -2,7 +2,7 @@
 import { Outlet, Navigate, Link, useLocation } from 'react-router-dom';
 import { 
   Wrench, LayoutDashboard, Users, CarFront, FileText, 
-  Package, Calendar, BarChart3, Settings, LogOut, UserCircle 
+  Package, Calendar, BarChart3, Settings, LogOut, UserCircle, Receipt 
 } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 
@@ -14,6 +14,7 @@ const MENU_ITEMS = [
   { path: '/vehicles', label: 'Vehicles', icon: CarFront },
   { path: '/employees', label: 'Employees', icon: Users },
   { path: '/invoices', label: 'Invoices', icon: FileText },
+  { path: '/bills', label: 'Bills & Expenses', icon: Receipt },
   { path: '/inventory', label: 'Inventory', icon: Package },
   { path: '/schedule', label: 'Schedule', icon: Calendar },
   { path: '/reports', label: 'Reports', icon: BarChart3 },

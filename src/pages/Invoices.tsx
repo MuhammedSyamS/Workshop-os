@@ -91,10 +91,10 @@ export function Invoices() {
                       </td>
                       <td className="p-3 text-right">
                         <div className="flex flex-col items-end">
-                          <span className="font-bold text-blue-600">${(inv.total_amount || inv.total || 0).toFixed(2)}</span>
+                          <span className="font-bold text-blue-600">₹{(inv.total_amount || inv.total || 0).toFixed(2)}</span>
                           {(inv.paid_amount || 0) > 0 && (
                             <span className="text-[10px] text-green-600 font-bold uppercase tracking-widest">
-                              Paid: ${(inv.paid_amount).toFixed(2)}
+                              Paid: ₹{(inv.paid_amount).toFixed(2)}
                             </span>
                           )}
                         </div>

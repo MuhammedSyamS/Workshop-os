@@ -144,9 +144,18 @@ export default function Employees() {
                 <tbody>
                   {employees.map(emp => (
                     <tr key={emp.id} className="border-b border-slate-200 hover:bg-blue-50 transition-colors text-sm text-slate-900">
-                      <td className="p-3 font-bold">
-                        {emp.name}
-                        {!emp.is_approved && <span className="ml-2 bg-red-100 text-red-600 text-[10px] px-2 py-0.5 rounded uppercase font-bold tracking-widest">Pending</span>}
+                      <td className="p-3 font-bold flex items-center gap-3">
+                        {emp.avatar ? (
+                          <img src={emp.avatar} alt={emp.name} className="w-8 h-8 rounded-full object-cover border border-slate-200 shadow-sm" />
+                        ) : (
+                          <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-xs text-blue-700 font-bold border border-blue-200 shadow-sm">
+                            {emp.name?.[0]?.toUpperCase()}
+                          </div>
+                        )}
+                        <div>
+                          {emp.name}
+                          {!emp.is_approved && <span className="ml-2 bg-red-100 text-red-600 text-[10px] px-2 py-0.5 rounded uppercase font-bold tracking-widest">Pending</span>}
+                        </div>
                       </td>
                       <td className="p-3 text-slate-500">{emp.role}</td>
                       <td className="p-3 text-slate-500">{emp.phone}</td>

@@ -9,7 +9,7 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         {[
           { label: 'Active Jobs', val: '24' },
-          { label: 'Today Revenue', val: '$3,450' },
+          { label: 'Today Revenue', val: '₹3,450' },
           { label: 'Mechanics on Duty', val: '8/10' },
           { label: 'Pending Invoices', val: '12' }
         ].map((kpi, i) => (
