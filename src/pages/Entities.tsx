@@ -10,8 +10,6 @@ export function Customers() {
   const [loading, setLoading] = useState(true);
   
   // Modals state
-  const [jobsModal, setJobsModal] = useState<{ isOpen: boolean; customer: any; jobs: any[] } | null>(null);
-  const [billModal, setBillModal] = useState<{ isOpen: boolean; customer: any; jobs: any[]; selectedJobId: string; lineItems: any[]; taxRate: number } | null>(null);
   const [addCustomerModal, setAddCustomerModal] = useState(false);
 
   const [newCustomer, setNewCustomer] = useState({ name: '', phone: '', email: '', address: '' });
