@@ -47,7 +47,7 @@ export default function Signup() {
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 sm:p-6">
       <div className="w-full max-w-md mx-auto">
-        <Card className="border-slate-200 shadow-xl overflow-hidden rounded-xl">
+        <div className="bg-white border border-slate-200 shadow-xl overflow-hidden rounded-xl">
           <div className="flex flex-col items-center mb-8 p-6 pb-0">
             <div className="w-12 h-12 bg-blue-600 flex items-center justify-center mb-4">
               <Wrench size={24} className="text-white" />
@@ -145,6 +145,7 @@ export default function Signup() {
             </form>
           </CardContent>
         </Card>
+        </div>
         
         <p className="text-center text-xs text-slate-400 mt-8 uppercase tracking-widest font-bold">
           CONFIDENTIAL SYSTEM &copy; {new Date().getFullYear()}
