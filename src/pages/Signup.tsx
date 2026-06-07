@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card'
 
 export default function Signup() {
   const [signupType, setSignupType] = useState<'ADMIN' | 'EMPLOYEE'>('EMPLOYEE');
+  const [userId, setUserId] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
@@ -28,6 +29,7 @@ export default function Signup() {
         'EMPLOYEE': 'MECHANIC'
       };
       await axios.post(`http://${window.location.hostname}:5000/api/auth/signup`, { 
+        userId,
         name, 
         email, 
         phone,
@@ -84,6 +86,15 @@ export default function Signup() {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Enter your name"
+              />
+
+              <Input
+                label="User ID"
+                type="text"
+                required
+                value={userId}
+                onChange={(e) => setUserId(e.target.value)}
+                placeholder="Choose a User ID (e.g., EMP-123)"
               />
               
               <Input

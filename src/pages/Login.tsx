@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card'
 
 export default function Login() {
   const [loginType, setLoginType] = useState<'ADMIN' | 'EMPLOYEE'>('ADMIN');
-  const [email, setEmail] = useState('');
+  const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -25,12 +25,12 @@ export default function Login() {
 
     try {
       // Setup default admin if requested
-      if (email === 'admin@workshop.os' && password === 'admin123') {
+      if (userId === 'admin' && password === 'admin123') {
         try { await axios.post(`http://${window.location.hostname}:5000/api/auth/setup`); } catch (e) { /* ignore */ }
       }
 
       try {
-        const res = await axios.post(`http://${window.location.hostname}:5000/api/auth/login`, { email, password });
+        const res = await axios.post(`http://${window.location.hostname}:5000/api/auth/login`, { userId, password });
         const user = res.data.user;
 
         if (loginType === 'ADMIN' && user.role !== 'OWNER' && user.role !== 'ADMIN') {
@@ -48,9 +48,9 @@ export default function Login() {
         navigate(user.role === 'OWNER' || user.role === 'ADMIN' ? '/dashboard' : '/profile');
       } catch (err: any) {
         // Network error, CORS issue, or DB timeout (Internal server error)
-        if (email === 'admin@workshop.os' && password === 'admin123' && loginType === 'ADMIN') {
+        if (userId === 'admin' && password === 'admin123' && loginType === 'ADMIN') {
            console.warn("Backend unreachable or errored, falling back to mock login.");
-           setAuth('mock-token', { id: '1', name: 'System Admin', role: 'OWNER', email: 'admin@workshop.os' });
+           setAuth('mock-token', { id: '1', name: 'System Admin', role: 'OWNER', userId: 'admin' });
            navigate('/dashboard');
            return;
         }
@@ -102,12 +102,12 @@ export default function Login() {
 
             <form onSubmit={handleLogin} className="space-y-5">
               <Input
-                label={loginType === 'ADMIN' ? 'Admin Email' : 'Employee Email'}
-                type="email"
+                label={loginType === 'ADMIN' ? 'Admin User ID' : 'Employee User ID'}
+                type="text"
                 required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
+                value={userId}
+                onChange={(e) => setUserId(e.target.value)}
+                placeholder="Enter your User ID"
               />
               
               <Input

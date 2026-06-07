@@ -10,7 +10,7 @@ export default function Employees() {
   const [loading, setLoading] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [newEmp, setNewEmp] = useState({ name: '', role: '', phone: '', email: '', specialization: '', salary: '', password: '' });
+  const [newEmp, setNewEmp] = useState({ userId: '', name: '', role: '', phone: '', email: '', specialization: '', salary: '', password: '' });
   
   const [historyModal, setHistoryModal] = useState<{ isOpen: boolean; employee: any; history: any[] } | null>(null);
 
@@ -37,7 +37,7 @@ export default function Employees() {
         headers: { Authorization: `Bearer ${token}` }
       });
       setIsAdding(false);
-      setNewEmp({ name: '', role: '', phone: '', email: '', specialization: '', salary: '', password: '' });
+      setNewEmp({ userId: '', name: '', role: '', phone: '', email: '', specialization: '', salary: '', password: '' });
       fetchEmployees();
     } catch (e) {
       console.error(e);
@@ -95,6 +95,8 @@ export default function Employees() {
           <CardContent className="p-6">
             <h2 className="text-blue-600 font-bold text-sm uppercase mb-4">New Employee Details</h2>
             <div className="grid grid-cols-2 gap-4 mb-4">
+              <input placeholder="User ID (e.g., EMP-123)" className="bg-slate-50 border border-slate-200 text-slate-900 p-2 text-sm" 
+                     value={newEmp.userId} onChange={e => setNewEmp({...newEmp, userId: e.target.value})} />
               <input placeholder="Full Name" className="bg-slate-50 border border-slate-200 text-slate-900 p-2 text-sm" 
                      value={newEmp.name} onChange={e => setNewEmp({...newEmp, name: e.target.value})} />
               <input placeholder="Email Address" className="bg-slate-50 border border-slate-200 text-slate-900 p-2 text-sm"
