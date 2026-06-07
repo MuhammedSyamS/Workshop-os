@@ -45,16 +45,16 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        
-        <div className="flex flex-col items-center mb-8">
-          <div className="w-12 h-12 bg-blue-600 flex items-center justify-center mb-4">
-            <Wrench size={24} className="text-white" />
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 sm:p-6">
+      <div className="w-full max-w-md mx-auto">
+        <Card className="border-slate-200 shadow-xl overflow-hidden rounded-xl">
+          <div className="flex flex-col items-center mb-8 p-6 pb-0">
+            <div className="w-12 h-12 bg-blue-600 flex items-center justify-center mb-4">
+              <Wrench size={24} className="text-white" />
+            </div>
+            <h1 className="text-2xl font-heading font-extrabold text-slate-900 tracking-tight uppercase">Workshop OS</h1>
+            <p className="text-sm font-body text-slate-500 mt-1">Enterprise Management System</p>
           </div>
-          <h1 className="text-2xl font-heading font-extrabold text-slate-900 tracking-tight uppercase">Workshop OS</h1>
-          <p className="text-sm font-body text-slate-500 mt-1">Enterprise Management System</p>
-        </div>
 
         <Card>
           <CardHeader>
