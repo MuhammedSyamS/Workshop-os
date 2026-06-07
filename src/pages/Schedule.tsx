@@ -20,9 +20,9 @@ export function Schedule() {
 
   const fetchData = async () => {
     try {
-      const aRes = await axios.get('http://localhost:5000/api/appointments', { headers: { Authorization: `Bearer ${token}` }});
-      const cRes = await axios.get('http://localhost:5000/api/customers', { headers: { Authorization: `Bearer ${token}` }});
-      const vRes = await axios.get('http://localhost:5000/api/vehicles', { headers: { Authorization: `Bearer ${token}` }});
+      const aRes = await axios.get(`http://${window.location.hostname}:5000/api/appointments`, { headers: { Authorization: `Bearer ${token}` }});
+      const cRes = await axios.get(`http://${window.location.hostname}:5000/api/customers`, { headers: { Authorization: `Bearer ${token}` }});
+      const vRes = await axios.get(`http://${window.location.hostname}:5000/api/vehicles`, { headers: { Authorization: `Bearer ${token}` }});
       
       setAppointments(aRes.data);
       setCustomers(cRes.data);
@@ -36,7 +36,7 @@ export function Schedule() {
 
   const handleBookSlot = async () => {
     try {
-      await axios.post('http://localhost:5000/api/appointments', newAppt, { headers: { Authorization: `Bearer ${token}` }});
+      await axios.post(`http://${window.location.hostname}:5000/api/appointments`, newAppt, { headers: { Authorization: `Bearer ${token}` }});
       setAddModal(false);
       setNewAppt({ customer_id: '', vehicle_id: '', appointment_date: '', service_type: '', notes: '' });
       fetchData();
@@ -47,7 +47,7 @@ export function Schedule() {
 
   const cancelAppointment = async (id: string) => {
     try {
-      await axios.patch(`http://localhost:5000/api/appointments/${id}/status`, { status: 'CANCELLED' }, { headers: { Authorization: `Bearer ${token}` }});
+      await axios.patch(`http://${window.location.hostname}:5000/api/appointments/${id}/status`, { status: 'CANCELLED' }, { headers: { Authorization: `Bearer ${token}` }});
       fetchData();
     } catch (e) {
       console.error(e);

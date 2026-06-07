@@ -17,7 +17,7 @@ export default function Bills() {
 
   const fetchBills = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/bills', {
+      const res = await axios.get(`http://${window.location.hostname}:5000/api/bills`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setBills(res.data);
@@ -30,7 +30,7 @@ export default function Bills() {
 
   const handleAddBill = async () => {
     try {
-      await axios.post('http://localhost:5000/api/bills', newBill, {
+      await axios.post(`http://${window.location.hostname}:5000/api/bills`, newBill, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setIsAdding(false);
@@ -44,7 +44,7 @@ export default function Bills() {
 
   const payBill = async (id: string) => {
     try {
-      await axios.patch(`http://localhost:5000/api/bills/${id}/pay`, {}, {
+      await axios.patch(`http://${window.location.hostname}:5000/api/bills/${id}/pay`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchBills();
@@ -57,7 +57,7 @@ export default function Bills() {
   const deleteBill = async (id: string) => {
     if(!confirm('Are you sure you want to delete this bill record?')) return;
     try {
-      await axios.delete(`http://localhost:5000/api/bills/${id}`, {
+      await axios.delete(`http://${window.location.hostname}:5000/api/bills/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchBills();

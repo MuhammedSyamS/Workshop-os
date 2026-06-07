@@ -30,7 +30,7 @@ const statusToBadgeVariant: Record<string, any> = {
   'Completed': 'slate',
 };
 
-const socket = io('http://localhost:5000');
+const socket = io(`http://${window.location.hostname}:5000`);
 
 export default function KanbanBoard() {
   const [jobCards, setJobCards] = useState<JobCard[]>([]);
@@ -39,7 +39,7 @@ export default function KanbanBoard() {
   useEffect(() => {
     const fetchJobCards = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/jobcards');
+        const response = await fetch(`http://${window.location.hostname}:5000/api/jobcards`);
         if (response.ok) {
           const data = await response.json();
           setJobCards(data.length > 0 ? data : mockJobCards);
@@ -63,7 +63,7 @@ export default function KanbanBoard() {
   const handleStatusChange = async (jobId: string, newStatus: string) => {
     setJobCards(prev => prev.map(j => j._id === jobId ? { ...j, status: newStatus } : j));
     try {
-      await fetch(`http://localhost:5000/api/jobcards/${jobId}/status`, {
+      await fetch(`http://${window.location.hostname}:5000/api/jobcards/${jobId}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus }),

@@ -54,7 +54,7 @@ export function Profile() {
 
   const uploadAvatar = async (base64: string) => {
     try {
-      await axios.patch(`http://localhost:5000/api/employees/${user?.id}/avatar`, { avatar: base64 }, {
+      await axios.patch(`http://${window.location.hostname}:5000/api/employees/${user?.id}/avatar`, { avatar: base64 }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setAvatar(base64);
@@ -72,7 +72,7 @@ export function Profile() {
   const fetchTodayAttendance = async () => {
     try {
       if (!user) return;
-      const res = await axios.get(`http://localhost:5000/api/attendance/my-attendance`, {
+      const res = await axios.get(`http://${window.location.hostname}:5000/api/attendance/my-attendance`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setTodayAttendance(res.data);
@@ -84,7 +84,7 @@ export function Profile() {
   const fetchHistory = async () => {
     try {
       if (!user) return;
-      const res = await axios.get(`http://localhost:5000/api/employees/${user.id}/attendance/history`, {
+      const res = await axios.get(`http://${window.location.hostname}:5000/api/employees/${user.id}/attendance/history`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setHistory(res.data);
@@ -97,7 +97,7 @@ export function Profile() {
 
   const markAttendance = async (action: 'MARK_IN' | 'MARK_OUT') => {
     try {
-      await axios.post('http://localhost:5000/api/attendance/mark', { action }, {
+      await axios.post(`http://${window.location.hostname}:5000/api/attendance/mark`, { action }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchTodayAttendance();

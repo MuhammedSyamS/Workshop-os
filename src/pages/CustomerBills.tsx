@@ -18,7 +18,7 @@ export function CustomerBills() {
 
   const fetchJobs = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/jobs', { headers: { Authorization: `Bearer ${token}` }});
+      const res = await axios.get(`http://${window.location.hostname}:5000/api/jobs`, { headers: { Authorization: `Bearer ${token}` }});
       setJobs(res.data);
     } catch (e) {
       console.error(e);
@@ -27,7 +27,7 @@ export function CustomerBills() {
 
   const fetchBills = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/invoices?type=BILL', { headers: { Authorization: `Bearer ${token}` }});
+      const res = await axios.get(`http://${window.location.hostname}:5000/api/invoices?type=BILL`, { headers: { Authorization: `Bearer ${token}` }});
       setBills(res.data);
     } catch (e) {
       console.error(e);
@@ -50,7 +50,7 @@ export function CustomerBills() {
     if (validItems.length === 0) return alert('Please add at least one valid line item with a description.');
 
     try {
-      await axios.post('http://localhost:5000/api/invoices', {
+      await axios.post(`http://${window.location.hostname}:5000/api/invoices`, {
         job_order_id: billModal.jobId,
         type: 'BILL',
         line_items: validItems,

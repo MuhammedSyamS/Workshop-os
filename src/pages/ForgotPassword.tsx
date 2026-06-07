@@ -20,7 +20,7 @@ export default function ForgotPassword() {
 
     try {
       // Assuming a forgot password route exists
-      await axios.post('http://localhost:5000/api/auth/forgot-password', { email });
+      await axios.post(`http://${window.location.hostname}:5000/api/auth/forgot-password`, { email });
       setMessage('If this email is registered, you will receive reset instructions.');
     } catch (err: any) {
       setError(err.response?.data?.error || 'Failed to connect to server.');

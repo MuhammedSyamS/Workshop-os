@@ -20,7 +20,7 @@ export function Customers() {
 
   const fetchCustomers = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/customers', {
+      const res = await axios.get(`http://${window.location.hostname}:5000/api/customers`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setCustomers(res.data);
@@ -33,7 +33,7 @@ export function Customers() {
 
   const handleAddCustomer = async () => {
     try {
-      await axios.post('http://localhost:5000/api/customers', newCustomer, {
+      await axios.post(`http://${window.location.hostname}:5000/api/customers`, newCustomer, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setAddCustomerModal(false);
@@ -129,8 +129,8 @@ export function Vehicles() {
 
   const fetchData = async () => {
     try {
-      const vRes = await axios.get('http://localhost:5000/api/vehicles', { headers: { Authorization: `Bearer ${token}` }});
-      const cRes = await axios.get('http://localhost:5000/api/customers', { headers: { Authorization: `Bearer ${token}` }});
+      const vRes = await axios.get(`http://${window.location.hostname}:5000/api/vehicles`, { headers: { Authorization: `Bearer ${token}` }});
+      const cRes = await axios.get(`http://${window.location.hostname}:5000/api/customers`, { headers: { Authorization: `Bearer ${token}` }});
       setVehicles(vRes.data);
       setCustomers(cRes.data);
     } catch (e) {
@@ -142,7 +142,7 @@ export function Vehicles() {
 
   const handleAdd = async () => {
     try {
-      await axios.post('http://localhost:5000/api/vehicles', newVeh, { headers: { Authorization: `Bearer ${token}` }});
+      await axios.post(`http://${window.location.hostname}:5000/api/vehicles`, newVeh, { headers: { Authorization: `Bearer ${token}` }});
       setAddModal(false);
       setNewVeh({ customer_id: '', reg_number: '', make: '', model: '', year: '', color: '' });
       fetchData();

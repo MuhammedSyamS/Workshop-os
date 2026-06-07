@@ -20,7 +20,7 @@ export default function KanbanItem({ jobCard }: { jobCard: JobCard }) {
   const handleStatusChange = async (newStatus: string) => {
     setIsUpdating(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/jobcards/${jobCard._id}/status`, {
+      const response = await fetch(`http://${window.location.hostname}:5000/api/jobcards/${jobCard._id}/status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
