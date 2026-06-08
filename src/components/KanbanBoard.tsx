@@ -88,7 +88,7 @@ export default function KanbanBoard() {
   }
 
   return (
-    <div className="flex gap-6 overflow-x-auto pb-12 snap-x px-2 hide-scrollbar">
+    <div className="flex gap-6 overflow-x-auto pb-12 snap-x lg:snap-none px-2 custom-scrollbar">
       {STATUSES.map(status => {
         const cards = jobCards.filter(j => j.status === status);
         const gradient = statusToGradient[status];

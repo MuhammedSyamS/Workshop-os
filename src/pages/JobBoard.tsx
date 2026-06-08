@@ -152,7 +152,7 @@ export default function JobBoard() {
         </Card>
       )}
 
-      <div className="flex gap-4 overflow-x-auto pb-4 flex-1 items-start snap-x hide-scrollbar">
+      <div className="flex gap-4 overflow-x-auto pb-4 flex-1 items-start snap-x lg:snap-none custom-scrollbar">
         {STATUSES.map(status => {
           const columnJobs = jobs.filter(j => j.status === status);
           

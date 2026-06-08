@@ -53,7 +53,7 @@ export default function Layout() {
     <div className="flex h-screen bg-slate-50 text-slate-900 overflow-hidden font-body">
       
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 flex-col">
+      <aside className="hidden lg:flex inset-y-0 left-0 z-50 w-64 shrink-0 bg-white border-r border-slate-200 flex-col">
         <div className="h-16 flex items-center px-6 border-b border-slate-100">
           <div className="w-8 h-8 bg-blue-600 flex items-center justify-center mr-3 rounded-lg shadow-sm">
             <Wrench size={16} className="text-white" />
@@ -101,7 +101,7 @@ export default function Layout() {
       <div className="flex-1 flex flex-col min-w-0 relative">
         
         {/* Top Header (Mobile & Desktop) */}
-        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 shadow-sm z-30">
+        <header className="h-16 shrink-0 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 shadow-sm z-30">
           <div className="flex items-center gap-3 lg:hidden">
             <div className="w-8 h-8 bg-blue-600 flex items-center justify-center rounded-lg shadow-sm">
               <Wrench size={16} className="text-white" />
