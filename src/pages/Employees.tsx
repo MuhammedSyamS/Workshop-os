@@ -84,7 +84,7 @@ export default function Employees() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-heading font-extrabold tracking-widest text-slate-900 uppercase">Employee Management</h1>
+        <h1 className="text-xl font-heading font-bold text-slate-900">Employee Management</h1>
         <Button variant="primary" onClick={() => setIsAdding(!isAdding)}>
           {isAdding ? 'CANCEL' : 'ADD EMPLOYEE'}
         </Button>
@@ -93,7 +93,7 @@ export default function Employees() {
       {isAdding && (
         <Card className="mb-6 bg-white border-slate-200">
           <CardContent className="p-6">
-            <h2 className="text-blue-600 font-bold text-sm uppercase mb-4">New Employee Details</h2>
+            <h2 className="text-blue-600 font-bold text-sm mb-4">New Employee Details</h2>
             <div className="grid grid-cols-2 gap-4 mb-4">
               <input placeholder="User ID (e.g., EMP-123)" className="bg-slate-50 border border-slate-200 text-slate-900 p-2 text-sm" 
                      value={newEmp.userId} onChange={e => setNewEmp({...newEmp, userId: e.target.value})} />
@@ -128,14 +128,14 @@ export default function Employees() {
         <CardHeader><CardTitle>STAFF DIRECTORY & ATTENDANCE</CardTitle></CardHeader>
         <CardContent>
           {loading ? (
-            <div className="py-12 text-center text-slate-500 text-sm uppercase tracking-widest font-bold">Loading...</div>
+            <div className="py-12 text-center text-slate-500 text-sm font-bold">Loading...</div>
           ) : employees.length === 0 ? (
-            <div className="py-12 text-center text-slate-500 text-sm uppercase tracking-widest font-bold">No Employees Found</div>
+            <div className="py-12 text-center text-slate-500 text-sm font-bold">No Employees Found</div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-slate-200 text-blue-600 text-xs uppercase tracking-widest">
+                  <tr className="border-b border-slate-200 text-blue-600 text-xs">
                     <th className="p-3 font-bold">Name</th>
                     <th className="p-3 font-bold">Role</th>
                     <th className="p-3 font-bold">Phone</th>
@@ -150,13 +150,13 @@ export default function Employees() {
                         {emp.avatar ? (
                           <img src={emp.avatar} alt={emp.name} className="w-8 h-8 rounded-full object-cover border border-slate-200 shadow-sm" />
                         ) : (
-                          <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-xs text-blue-700 font-bold border border-blue-200 shadow-sm">
+                          <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-sm text-blue-700 font-medium border border-blue-200 shadow-sm">
                             {emp.name?.[0]?.toUpperCase()}
                           </div>
                         )}
                         <div>
                           {emp.name}
-                          {!emp.is_approved && <span className="ml-2 bg-red-100 text-red-600 text-[10px] px-2 py-0.5 rounded uppercase font-bold tracking-widest">Pending</span>}
+                          {!emp.is_approved && <span className="ml-2 bg-red-100 text-red-600 text-[10px] px-2 py-0.5 rounded font-bold">Pending</span>}
                         </div>
                       </td>
                       <td className="p-3 text-slate-500">{emp.role}</td>
@@ -169,14 +169,7 @@ export default function Employees() {
                             <select 
                               value={emp.today_attendance}
                               onChange={(e) => markAttendance(emp.id, e.target.value)}
-                              className={`text-xs font-bold p-1 border uppercase rounded-sm ${
-                                emp.today_attendance === 'PENDING_VERIFICATION' ? 'bg-orange-100 text-orange-800 border-orange-200' :
-                                emp.today_attendance === 'PRESENT' ? 'bg-green-100 text-green-800 border-green-200' : 
-                                emp.today_attendance === 'ABSENT' ? 'bg-red-100 text-red-800 border-red-200' :
-                                emp.today_attendance === 'LATE' ? 'bg-orange-100 text-orange-800 border-orange-200' :
-                                emp.today_attendance === 'LEAVE' ? 'bg-purple-100 text-purple-800 border-purple-200' :
-                                'bg-slate-100 text-slate-600 border-slate-300'
-                              }`}
+                              className={`text-sm font-medium p-1 border rounded-sm ${ emp.today_attendance === 'PENDING_VERIFICATION' ? 'bg-orange-100 text-orange-800 border-orange-200' : emp.today_attendance === 'PRESENT' ? 'bg-green-100 text-green-800 border-green-200' : emp.today_attendance === 'ABSENT' ? 'bg-red-100 text-red-800 border-red-200' : emp.today_attendance === 'LATE' ? 'bg-orange-100 text-orange-800 border-orange-200' : emp.today_attendance === 'LEAVE' ? 'bg-purple-100 text-purple-800 border-purple-200' : 'bg-slate-100 text-slate-600 border-slate-300' }`}
                             >
                               <option value="UNMARKED">Unmarked</option>
                               <option value="PENDING_VERIFICATION">Pending Verification</option>
@@ -215,7 +208,7 @@ export default function Employees() {
             <CardContent className="p-6">
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <h2 className="text-xl font-heading font-extrabold text-slate-900 mb-1">Attendance History</h2>
+                  <h2 className="text-xl font-heading font-bold text-slate-900 mb-1">Attendance History</h2>
                   <p className="text-sm font-bold text-blue-600">{historyModal.employee.name} - {historyModal.employee.role}</p>
                 </div>
                 <Button variant="outline" onClick={() => setHistoryModal(null)}>CLOSE</Button>
@@ -227,7 +220,7 @@ export default function Employees() {
                 ) : (
                   <table className="w-full text-left text-sm">
                     <thead>
-                      <tr className="border-b border-slate-200 text-slate-500 text-xs uppercase tracking-widest">
+                      <tr className="border-b border-slate-200 text-slate-500 text-xs">
                         <th className="py-2">Date</th>
                         <th className="py-2">Status</th>
                       </tr>
@@ -237,12 +230,7 @@ export default function Employees() {
                         <tr key={record.id} className="border-b border-slate-100 last:border-0">
                           <td className="py-2 font-medium text-slate-900">{new Date(record.date).toLocaleDateString()}</td>
                           <td className="py-2">
-                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-sm uppercase ${
-                              record.status === 'PRESENT' ? 'bg-green-100 text-green-800' : 
-                              record.status === 'ABSENT' ? 'bg-red-100 text-red-800' :
-                              record.status === 'LATE' ? 'bg-orange-100 text-orange-800' :
-                              'bg-purple-100 text-purple-800'
-                            }`}>
+                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-sm ${ record.status === 'PRESENT' ? 'bg-green-100 text-green-800' : record.status === 'ABSENT' ? 'bg-red-100 text-red-800' : record.status === 'LATE' ? 'bg-orange-100 text-orange-800' : 'bg-purple-100 text-purple-800' }`}>
                               {record.status}
                             </span>
                           </td>

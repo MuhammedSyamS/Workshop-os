@@ -110,7 +110,7 @@ export function Profile() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-heading font-extrabold tracking-widest text-slate-900 uppercase">My Profile</h1>
+        <h1 className="text-xl font-heading font-bold text-slate-900">My Profile</h1>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -125,7 +125,7 @@ export function Profile() {
                   <span className="text-3xl font-bold text-slate-400">{user?.name?.[0]?.toUpperCase()}</span>
                 )}
               </div>
-              <label className="cursor-pointer text-xs font-bold text-blue-600 hover:text-blue-800 uppercase tracking-widest bg-blue-50 px-3 py-1 rounded-full">
+              <label className="cursor-pointer text-sm font-medium text-blue-600 hover:text-blue-800 bg-blue-50 px-3 py-1 rounded-full">
                 Upload Photo
                 <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
               </label>
@@ -133,15 +133,15 @@ export function Profile() {
             
             <div className="space-y-4">
               <div>
-                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Full Name</p>
+                <p className="text-sm font-medium text-slate-500">Full Name</p>
                 <p className="text-lg font-bold text-slate-900">{user?.name}</p>
               </div>
               <div>
-                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Role</p>
-                <p className="text-sm font-bold text-blue-600 uppercase">{user?.role}</p>
+                <p className="text-sm font-medium text-slate-500">Role</p>
+                <p className="text-sm font-bold text-blue-600">{user?.role}</p>
               </div>
               <div>
-                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest">Email Address</p>
+                <p className="text-sm font-medium text-slate-500">Email Address</p>
                 <p className="text-sm text-slate-900">{user?.email}</p>
               </div>
             </div>
@@ -152,16 +152,12 @@ export function Profile() {
           <CardHeader><CardTitle>TODAY'S ATTENDANCE</CardTitle></CardHeader>
           <CardContent className="space-y-4">
             {loading ? (
-              <p className="text-xs text-slate-500 uppercase tracking-widest font-bold">Loading...</p>
+              <p className="text-sm text-slate-500 font-medium">Loading...</p>
             ) : (
               <div className="space-y-4">
                 <div className="p-4 rounded-sm border border-slate-200 bg-slate-50 text-center">
-                  <p className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Status</p>
-                  <p className={`font-black text-lg ${
-                    !todayAttendance ? 'text-slate-400' :
-                    todayAttendance.status === 'PENDING_VERIFICATION' ? 'text-orange-500' :
-                    todayAttendance.status === 'PRESENT' ? 'text-green-600' : 'text-blue-600'
-                  }`}>
+                  <p className="text-sm font-medium text-slate-500 mb-1">Status</p>
+                  <p className={`font-bold text-lg ${ !todayAttendance ? 'text-slate-400' : todayAttendance.status === 'PENDING_VERIFICATION' ? 'text-orange-500' : todayAttendance.status === 'PRESENT' ? 'text-green-600' : 'text-blue-600' }`}>
                     {!todayAttendance ? 'NOT MARKED IN' : todayAttendance.status.replace('_', ' ')}
                   </p>
                 </div>
@@ -170,11 +166,7 @@ export function Profile() {
                   <button 
                     onClick={() => markAttendance('MARK_IN')}
                     disabled={!!todayAttendance?.mark_in_time}
-                    className={`w-full py-3 font-bold uppercase tracking-widest rounded-sm transition-all ${
-                      todayAttendance?.mark_in_time 
-                        ? 'bg-slate-200 text-slate-400 cursor-not-allowed' 
-                        : 'bg-green-600 text-white hover:bg-green-700 shadow-md'
-                    }`}
+                    className={`w-full py-3 font-bold rounded-sm transition-all ${ todayAttendance?.mark_in_time ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-green-600 text-white hover:bg-green-700 shadow-md' }`}
                   >
                     {todayAttendance?.mark_in_time 
                       ? `Marked In at ${new Date(todayAttendance.mark_in_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}` 
@@ -185,11 +177,7 @@ export function Profile() {
                   <button 
                     onClick={() => markAttendance('MARK_OUT')}
                     disabled={!todayAttendance?.mark_in_time || !!todayAttendance?.mark_out_time}
-                    className={`w-full py-3 font-bold uppercase tracking-widest rounded-sm transition-all ${
-                      !todayAttendance?.mark_in_time || todayAttendance?.mark_out_time
-                        ? 'bg-slate-200 text-slate-400 cursor-not-allowed' 
-                        : 'bg-orange-600 text-white hover:bg-orange-700 shadow-md'
-                    }`}
+                    className={`w-full py-3 font-bold rounded-sm transition-all ${ !todayAttendance?.mark_in_time || todayAttendance?.mark_out_time ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-orange-600 text-white hover:bg-orange-700 shadow-md' }`}
                   >
                     {todayAttendance?.mark_out_time 
                       ? `Marked Out at ${new Date(todayAttendance.mark_out_time).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}` 
@@ -208,14 +196,14 @@ export function Profile() {
           <CardHeader><CardTitle>MY ATTENDANCE HISTORY</CardTitle></CardHeader>
           <CardContent>
             {loading ? (
-              <div className="py-12 text-center text-slate-500 text-sm uppercase tracking-widest font-bold">Loading...</div>
+              <div className="py-12 text-center text-slate-500 text-sm font-bold">Loading...</div>
             ) : history.length === 0 ? (
-              <div className="py-12 text-center text-slate-500 text-sm uppercase tracking-widest font-bold">No Records Found</div>
+              <div className="py-12 text-center text-slate-500 text-sm font-bold">No Records Found</div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="border-b border-slate-200 text-blue-600 text-xs uppercase tracking-widest">
+                    <tr className="border-b border-slate-200 text-blue-600 text-xs">
                       <th className="p-3 font-bold">Date</th>
                       <th className="p-3 font-bold">Status</th>
                     </tr>
@@ -225,12 +213,7 @@ export function Profile() {
                       <tr key={record.id} className="border-b border-slate-200 hover:bg-blue-50 transition-colors text-sm text-slate-900">
                         <td className="p-3 font-bold">{new Date(record.date).toLocaleDateString()}</td>
                         <td className="p-3">
-                          <span className={`text-[10px] font-bold px-2 py-1 rounded-sm uppercase tracking-widest ${
-                            record.status === 'PRESENT' ? 'bg-green-100 text-green-800' : 
-                            record.status === 'ABSENT' ? 'bg-red-100 text-red-800' :
-                            record.status === 'LATE' ? 'bg-orange-100 text-orange-800' :
-                            'bg-purple-100 text-purple-800'
-                          }`}>
+                          <span className={`text-[10px] font-bold px-2 py-1 rounded-sm ${ record.status === 'PRESENT' ? 'bg-green-100 text-green-800' : record.status === 'ABSENT' ? 'bg-red-100 text-red-800' : record.status === 'LATE' ? 'bg-orange-100 text-orange-800' : 'bg-purple-100 text-purple-800' }`}>
                             {record.status}
                           </span>
                         </td>

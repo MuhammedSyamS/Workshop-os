@@ -73,7 +73,7 @@ export default function Bills() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-heading font-extrabold tracking-widest text-slate-900 uppercase">Bills & Expenses</h1>
+        <h1 className="text-xl font-heading font-bold text-slate-900">Bills & Expenses</h1>
         <Button variant="primary" onClick={() => setIsAdding(!isAdding)}>
           {isAdding ? 'CANCEL' : 'RECORD NEW BILL'}
         </Button>
@@ -82,14 +82,14 @@ export default function Bills() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <Card className="border-red-200 bg-red-50">
           <CardContent className="p-6 flex flex-col justify-center items-center">
-            <p className="text-xs font-bold text-red-600 uppercase tracking-widest mb-1">Total Unpaid Bills</p>
-            <p className="text-3xl font-black text-red-700">₹{totalUnpaid.toFixed(2)}</p>
+            <p className="text-sm font-medium text-red-600 mb-1">Total Unpaid Bills</p>
+            <p className="text-3xl font-bold text-red-700">₹{totalUnpaid.toFixed(2)}</p>
           </CardContent>
         </Card>
         <Card className="border-green-200 bg-green-50">
           <CardContent className="p-6 flex flex-col justify-center items-center">
-            <p className="text-xs font-bold text-green-600 uppercase tracking-widest mb-1">Total Paid Expenses</p>
-            <p className="text-3xl font-black text-green-700">₹{totalPaid.toFixed(2)}</p>
+            <p className="text-sm font-medium text-green-600 mb-1">Total Paid Expenses</p>
+            <p className="text-3xl font-bold text-green-700">₹{totalPaid.toFixed(2)}</p>
           </CardContent>
         </Card>
       </div>
@@ -97,7 +97,7 @@ export default function Bills() {
       {isAdding && (
         <Card className="mb-6 bg-white border-slate-200 shadow-xl">
           <CardContent className="p-6">
-            <h2 className="text-blue-600 font-bold text-sm uppercase mb-4">Expense Details</h2>
+            <h2 className="text-blue-600 font-bold text-sm mb-4">Expense Details</h2>
             <div className="grid grid-cols-2 gap-4 mb-4">
               <input placeholder="Bill Title (e.g., June Electricity)" className="bg-slate-50 border border-slate-200 text-slate-900 p-2 text-sm" 
                      value={newBill.title} onChange={e => setNewBill({...newBill, title: e.target.value})} />
@@ -128,14 +128,14 @@ export default function Bills() {
         <CardHeader><CardTitle>EXPENSE HISTORY</CardTitle></CardHeader>
         <CardContent>
           {loading ? (
-            <div className="py-12 text-center text-slate-500 text-sm uppercase tracking-widest font-bold">Loading...</div>
+            <div className="py-12 text-center text-slate-500 text-sm font-bold">Loading...</div>
           ) : bills.length === 0 ? (
-            <div className="py-12 text-center text-slate-500 text-sm uppercase tracking-widest font-bold">No Expense Records Found</div>
+            <div className="py-12 text-center text-slate-500 text-sm font-bold">No Expense Records Found</div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-slate-200 text-blue-600 text-xs uppercase tracking-widest">
+                  <tr className="border-b border-slate-200 text-blue-600 text-xs">
                     <th className="p-3 font-bold">Date</th>
                     <th className="p-3 font-bold">Title & Category</th>
                     <th className="p-3 font-bold text-right">Amount</th>
@@ -149,13 +149,11 @@ export default function Bills() {
                       <td className="p-3 font-bold text-slate-500">{new Date(bill.date).toLocaleDateString()}</td>
                       <td className="p-3">
                         <div className="font-bold text-slate-900">{bill.title}</div>
-                        <div className="text-[10px] uppercase font-bold text-slate-400 tracking-widest">{bill.category}</div>
+                        <div className="text-[10px] font-bold text-slate-400">{bill.category}</div>
                       </td>
-                      <td className="p-3 text-right font-black text-slate-900">₹{bill.amount.toFixed(2)}</td>
+                      <td className="p-3 text-right font-bold text-slate-900">₹{bill.amount.toFixed(2)}</td>
                       <td className="p-3 text-center">
-                        <span className={`text-[10px] font-bold px-2 py-1 rounded-sm uppercase tracking-widest ${
-                          bill.status === 'PAID' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                        }`}>
+                        <span className={`text-[10px] font-bold px-2 py-1 rounded-sm ${ bill.status === 'PAID' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }`}>
                           {bill.status}
                         </span>
                       </td>

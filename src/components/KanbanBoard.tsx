@@ -99,9 +99,9 @@ export default function KanbanBoard() {
             <div className="flex items-center justify-between mb-5 px-5 py-4 rounded-2xl bg-white/70 dark:bg-slate-800/70 backdrop-blur-xl border border-white/50 dark:border-slate-700/50 shadow-sm">
               <div className="flex items-center gap-3">
                 <span className={`w-3.5 h-3.5 rounded-full bg-gradient-to-br ${gradient} shadow-lg`} />
-                <h3 className="font-extrabold text-slate-800 dark:text-slate-100 text-sm tracking-tight">{status}</h3>
+                <h3 className="font-bold text-slate-800 dark:text-slate-100 text-sm tracking-tight">{status}</h3>
               </div>
-              <span className={`bg-gradient-to-br ${gradient} text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-inner`}>
+              <span className={`bg-gradient-to-br ${gradient} text-white text-sm font-medium px-3 py-1.5 rounded-full shadow-inner`}>
                 {cards.length}
               </span>
             </div>
@@ -117,7 +117,7 @@ export default function KanbanBoard() {
                     {/* Header Row */}
                     <div className="flex items-start justify-between mb-5">
                       <div>
-                        <p className="font-extrabold text-slate-900 dark:text-white text-lg leading-none tracking-tight mb-1.5 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 transition-all">{job.vehicle.licensePlate}</p>
+                        <p className="font-bold text-slate-900 dark:text-white text-lg leading-none tracking-tight mb-1.5 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:to-pink-600 transition-all">{job.vehicle.licensePlate}</p>
                         <p className="text-[13px] font-semibold text-slate-500 dark:text-slate-400">{job.vehicle.make} {job.vehicle.model}</p>
                       </div>
                       <Badge variant={statusToBadgeVariant[job.status]}>{job.status}</Badge>

@@ -57,7 +57,7 @@ export function Schedule() {
   return (
     <div className="space-y-6 relative">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-heading font-extrabold tracking-widest text-slate-900 uppercase">Appointments</h1>
+        <h1 className="text-xl font-heading font-bold text-slate-900">Appointments</h1>
         <Button variant="primary" onClick={() => setAddModal(true)}>BOOK SLOT</Button>
       </div>
       
@@ -65,14 +65,14 @@ export function Schedule() {
         <CardHeader><CardTitle>CALENDAR SCHEDULE</CardTitle></CardHeader>
         <CardContent>
           {loading ? (
-            <div className="py-12 text-center text-slate-500 text-sm uppercase tracking-widest font-bold">Loading...</div>
+            <div className="py-12 text-center text-slate-500 text-sm font-bold">Loading...</div>
           ) : appointments.length === 0 ? (
-            <div className="py-12 text-center text-slate-500 text-sm uppercase tracking-widest font-bold">No Appointments Found</div>
+            <div className="py-12 text-center text-slate-500 text-sm font-bold">No Appointments Found</div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-slate-200 text-blue-600 text-xs uppercase tracking-widest">
+                  <tr className="border-b border-slate-200 text-blue-600 text-xs">
                     <th className="p-3 font-bold">Date & Time</th>
                     <th className="p-3 font-bold">Customer</th>
                     <th className="p-3 font-bold">Vehicle</th>
@@ -89,10 +89,7 @@ export function Schedule() {
                       <td className="p-3 text-slate-500">{a.vehicle_id?.reg_number || 'N/A'}</td>
                       <td className="p-3 text-slate-500">{a.service_type}</td>
                       <td className="p-3 text-center">
-                        <span className={`px-2 py-1 rounded font-bold text-[10px] uppercase tracking-widest ${
-                          a.status === 'SCHEDULED' ? 'bg-blue-100 text-blue-600' :
-                          a.status === 'COMPLETED' ? 'bg-green-100 text-green-600' : 'bg-slate-200 text-slate-600'
-                        }`}>
+                        <span className={`px-2 py-1 rounded font-bold text-[10px] ${ a.status === 'SCHEDULED' ? 'bg-blue-100 text-blue-600' : a.status === 'COMPLETED' ? 'bg-green-100 text-green-600' : 'bg-slate-200 text-slate-600' }`}>
                           {a.status}
                         </span>
                       </td>
@@ -115,7 +112,7 @@ export function Schedule() {
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
           <Card className="w-full max-w-md bg-white border-slate-200 shadow-xl">
             <CardContent className="p-6">
-              <h2 className="text-xl font-heading font-extrabold text-slate-900 mb-6">Book New Slot</h2>
+              <h2 className="text-xl font-heading font-bold text-slate-900 mb-6">Book New Slot</h2>
               <div className="space-y-4">
                 <select 
                   className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-2 text-sm"

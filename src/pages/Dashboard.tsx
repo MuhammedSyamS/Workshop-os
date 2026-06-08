@@ -1,22 +1,21 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 
 export default function Dashboard() {
   return (
     <div className="space-y-6">
       
-      {/* KPI Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
+      {/* KPI Row - Compact Grid for Mobile */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: 'Active Jobs', val: '24' },
-          { label: 'Today Revenue', val: '₹3,450' },
-          { label: 'Mechanics on Duty', val: '8/10' },
-          { label: 'Pending Invoices', val: '12' }
+          { label: 'Revenue', val: '₹3,450' },
+          { label: 'Mechanics', val: '8/10' },
+          { label: 'Invoices', val: '12' }
         ].map((kpi, i) => (
-          <Card key={i}>
-            <CardContent className="p-6">
-              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">{kpi.label}</p>
-              <p className="text-3xl font-heading font-extrabold text-slate-900">{kpi.val}</p>
+          <Card key={i} className="border border-slate-100 shadow-sm bg-white">
+            <CardContent className="p-4 flex flex-col justify-center">
+              <p className="text-xs font-medium text-slate-500 mb-0.5">{kpi.label}</p>
+              <p className="text-2xl font-bold text-slate-900">{kpi.val}</p>
             </CardContent>
           </Card>
         ))}
@@ -24,24 +23,24 @@ export default function Dashboard() {
 
       {/* Main Content Area placeholder */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="lg:col-span-2 min-h-[400px]">
+        <Card className="lg:col-span-2 min-h-[300px]">
           <CardHeader>
-            <CardTitle>ACTIVE JOB ORDERS</CardTitle>
+            <CardTitle>Active Job Orders</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="p-8 text-center text-slate-500 text-sm uppercase tracking-widest font-bold">
-              [ Data Table Integration Pending Phase 3 ]
+            <div className="p-8 text-center text-slate-500 text-sm font-medium">
+              Data Table Integration Pending Phase 3
             </div>
           </CardContent>
         </Card>
 
-        <Card className="min-h-[400px]">
+        <Card className="min-h-[300px]">
           <CardHeader>
-            <CardTitle>RECENT ACTIVITY</CardTitle>
+            <CardTitle>Recent Activity</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="py-8 text-center text-slate-500 text-sm uppercase tracking-widest font-bold">
-              [ Activity Feed Pending ]
+            <div className="py-8 text-center text-slate-500 text-sm font-medium">
+              Activity Feed Pending
             </div>
           </CardContent>
         </Card>

@@ -36,15 +36,7 @@ export function Button({
 }: ButtonProps) {
   return (
     <button
-      className={`
-        inline-flex items-center justify-center font-bold font-heading uppercase tracking-wide
-        transition-colors duration-200 ease-in-out
-        focus:outline-none focus:ring-1 focus:ring-blue-600 focus:ring-offset-1 focus:ring-offset-slate-50
-        disabled:opacity-50 disabled:cursor-not-allowed rounded-none
-        ${variantStyles[variant]}
-        ${sizeStyles[size]}
-        ${className}
-      `}
+      className={`inline-flex items-center justify-center font-bold font-heading transition-colors duration-200 ease-in-out focus:outline-none focus:ring-1 focus:ring-blue-600 focus:ring-offset-1 focus:ring-offset-slate-50 disabled:opacity-50 disabled:cursor-not-allowed rounded-none ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
       disabled={disabled || isLoading}
       {...props}
     >

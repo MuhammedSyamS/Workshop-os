@@ -42,7 +42,7 @@ export default function App() {
           <Route path="/inventory" element={<Inventory />} />
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/reports" element={<Reports />} />
-          <Route path="/settings" element={<div className="text-slate-500 uppercase font-bold text-center mt-20">Settings Module</div>} />
+          <Route path="/settings" element={<div className="text-slate-500 font-bold text-center mt-20">Settings Module</div>} />
         </Route>
         
         <Route path="*" element={<Navigate to="/dashboard" replace />} />

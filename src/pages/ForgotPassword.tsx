@@ -37,7 +37,7 @@ export default function ForgotPassword() {
           <div className="w-12 h-12 bg-blue-600 flex items-center justify-center mb-4">
             <Wrench size={24} className="text-white" />
           </div>
-          <h1 className="text-2xl font-heading font-extrabold text-slate-900 tracking-tight uppercase">Workshop OS</h1>
+          <h1 className="text-2xl font-heading font-bold text-slate-900 tracking-tight">Workshop OS</h1>
           <p className="text-sm font-body text-slate-500 mt-1">Enterprise Management System</p>
         </div>
 
@@ -81,7 +81,7 @@ export default function ForgotPassword() {
           </CardContent>
         </Card>
         
-        <p className="text-center text-xs text-slate-400 mt-8 uppercase tracking-widest font-bold">
+        <p className="text-center text-sm text-slate-400 mt-8 font-medium">
           CONFIDENTIAL SYSTEM &copy; {new Date().getFullYear()}
         </p>
       </div>

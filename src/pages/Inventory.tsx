@@ -50,7 +50,7 @@ export function Inventory() {
   return (
     <div className="space-y-6 relative">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-heading font-extrabold tracking-widest text-slate-900 uppercase">Parts Inventory</h1>
+        <h1 className="text-xl font-heading font-bold text-slate-900">Parts Inventory</h1>
         <Button variant="primary" onClick={() => setAddModal(true)}>ADD PART</Button>
       </div>
       
@@ -58,14 +58,14 @@ export function Inventory() {
         <CardHeader><CardTitle>STOCK CATALOGUE</CardTitle></CardHeader>
         <CardContent>
           {loading ? (
-            <div className="py-12 text-center text-slate-500 text-sm uppercase tracking-widest font-bold">Loading...</div>
+            <div className="py-12 text-center text-slate-500 text-sm font-bold">Loading...</div>
           ) : parts.length === 0 ? (
-            <div className="py-12 text-center text-slate-500 text-sm uppercase tracking-widest font-bold">No Parts Found</div>
+            <div className="py-12 text-center text-slate-500 text-sm font-bold">No Parts Found</div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-slate-200 text-blue-600 text-xs uppercase tracking-widest">
+                  <tr className="border-b border-slate-200 text-blue-600 text-xs">
                     <th className="p-3 font-bold">Item Name</th>
                     <th className="p-3 font-bold">SKU</th>
                     <th className="p-3 font-bold text-center">In Stock</th>
@@ -79,7 +79,7 @@ export function Inventory() {
                       <td className="p-3 font-bold">{p.name}</td>
                       <td className="p-3 text-slate-500">{p.sku}</td>
                       <td className="p-3 text-center">
-                        <span className={`px-2 py-1 rounded font-bold text-xs ${p.stock_qty <= p.reorder_level ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`}>
+                        <span className={`px-2 py-1 rounded font-medium text-sm ${p.stock_qty <= p.reorder_level ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`}>
                           {p.stock_qty}
                         </span>
                       </td>
@@ -102,7 +102,7 @@ export function Inventory() {
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
           <Card className="w-full max-w-md bg-white border-slate-200 shadow-xl">
             <CardContent className="p-6">
-              <h2 className="text-xl font-heading font-extrabold text-slate-900 mb-6">Add Inventory Item</h2>
+              <h2 className="text-xl font-heading font-bold text-slate-900 mb-6">Add Inventory Item</h2>
               <div className="space-y-4">
                 <input placeholder="Part Name" className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-2 text-sm" 
                        value={newPart.name} onChange={e => setNewPart({...newPart, name: e.target.value})} />

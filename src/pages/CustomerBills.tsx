@@ -70,7 +70,7 @@ export function CustomerBills() {
   return (
     <div className="space-y-6 relative">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-heading font-extrabold tracking-widest text-slate-900 uppercase">Customer Bills</h1>
+        <h1 className="text-xl font-heading font-bold text-slate-900">Customer Bills</h1>
         <Button variant="primary" onClick={openNewBillModal}>CREATE NEW BILL</Button>
       </div>
       
@@ -78,14 +78,14 @@ export function CustomerBills() {
         <CardHeader><CardTitle>BILL REGISTRY</CardTitle></CardHeader>
         <CardContent>
           {loading ? (
-            <div className="py-12 text-center text-slate-500 text-sm uppercase tracking-widest font-bold">Loading...</div>
+            <div className="py-12 text-center text-slate-500 text-sm font-bold">Loading...</div>
           ) : bills.length === 0 ? (
-            <div className="py-12 text-center text-slate-500 text-sm uppercase tracking-widest font-bold">No Bills Found</div>
+            <div className="py-12 text-center text-slate-500 text-sm font-bold">No Bills Found</div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-slate-200 text-blue-600 text-xs uppercase tracking-widest">
+                  <tr className="border-b border-slate-200 text-blue-600 text-xs">
                     <th className="p-3 font-bold">Bill #</th>
                     <th className="p-3 font-bold">Job Card</th>
                     <th className="p-3 font-bold">Customer</th>
@@ -134,14 +134,14 @@ export function CustomerBills() {
             <CardContent className="p-6 flex-1 overflow-auto">
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <h2 className="text-xl font-heading font-extrabold text-slate-900 mb-1">Generate Customer Bill</h2>
+                  <h2 className="text-xl font-heading font-bold text-slate-900 mb-1">Generate Customer Bill</h2>
                   <p className="text-sm font-bold text-blue-600">Create a non-tax estimate/bill</p>
                 </div>
                 <Button variant="outline" onClick={() => setBillModal(null)}>CLOSE</Button>
               </div>
 
               <div className="mb-6">
-                <label className="text-xs font-bold text-slate-500 uppercase block mb-2">Select Job Order</label>
+                <label className="text-sm font-medium text-slate-500 block mb-2">Select Job Order</label>
                 <select 
                   className="w-full bg-slate-50 border border-slate-200 p-2 text-sm text-slate-900"
                   value={billModal.jobId}
@@ -163,17 +163,17 @@ export function CustomerBills() {
                       return (
                         <div className="grid grid-cols-2 gap-4 text-sm">
                           <div>
-                            <span className="text-slate-500 text-xs font-bold uppercase block mb-1">Customer</span>
+                            <span className="text-slate-500 text-sm font-medium block mb-1">Customer</span>
                             <div className="font-bold text-slate-900">{selectedJob.customer?.name}</div>
                             <div className="text-slate-500">{selectedJob.customer?.phone}</div>
                           </div>
                           <div>
-                            <span className="text-slate-500 text-xs font-bold uppercase block mb-1">Vehicle</span>
+                            <span className="text-slate-500 text-sm font-medium block mb-1">Vehicle</span>
                             <div className="font-bold text-slate-900">{selectedJob.vehicle?.reg_number}</div>
                             <div className="text-slate-500">{selectedJob.vehicle?.make} {selectedJob.vehicle?.model}</div>
                           </div>
                           <div className="col-span-2">
-                            <span className="text-slate-500 text-xs font-bold uppercase block mb-1">Complaint / Issue</span>
+                            <span className="text-slate-500 text-sm font-medium block mb-1">Complaint / Issue</span>
                             <div className="text-slate-900">{selectedJob.complaint}</div>
                           </div>
                         </div>
@@ -185,7 +185,7 @@ export function CustomerBills() {
 
               <div className="mb-6">
                 <div className="flex justify-between items-center mb-4">
-                  <label className="text-xs font-bold text-slate-500 uppercase">Line Items (Parts, Labor)</label>
+                  <label className="text-sm font-medium text-slate-500">Line Items (Parts, Labor)</label>
                   <Button variant="outline" className="text-xs py-1" onClick={() => {
                     setBillModal({
                       ...billModal,
@@ -246,8 +246,8 @@ export function CustomerBills() {
                   </span>
                 </div>
                 <div className="flex justify-between items-center border-t border-slate-200 pt-4 mb-6">
-                  <span className="text-lg font-extrabold text-slate-900 uppercase">Total Due:</span>
-                  <span className="text-2xl font-black text-blue-600">
+                  <span className="text-lg font-bold text-slate-900">Total Due:</span>
+                  <span className="text-2xl font-bold text-blue-600">
                     ₹{(
                       billModal.lineItems.reduce((sum: number, item: any) => sum + (item.quantity * item.price), 0)
                     ).toFixed(2)}

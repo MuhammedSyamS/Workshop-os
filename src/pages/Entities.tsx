@@ -47,7 +47,7 @@ export function Customers() {
   return (
     <div className="space-y-6 relative">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-heading font-extrabold tracking-widest text-slate-900 uppercase">Customer Directory</h1>
+        <h1 className="text-xl font-heading font-bold text-slate-900">Customer Directory</h1>
         <Button variant="primary" onClick={() => setAddCustomerModal(true)}>ADD CUSTOMER</Button>
       </div>
 
@@ -55,14 +55,14 @@ export function Customers() {
         <CardHeader><CardTitle>ALL CUSTOMERS</CardTitle></CardHeader>
         <CardContent>
           {loading ? (
-            <div className="py-12 text-center text-slate-500 text-sm uppercase tracking-widest font-bold">Loading...</div>
+            <div className="py-12 text-center text-slate-500 text-sm font-bold">Loading...</div>
           ) : customers.length === 0 ? (
-            <div className="py-12 text-center text-slate-500 text-sm uppercase tracking-widest font-bold">No Customers Found</div>
+            <div className="py-12 text-center text-slate-500 text-sm font-bold">No Customers Found</div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-slate-200 text-blue-600 text-xs uppercase tracking-widest">
+                  <tr className="border-b border-slate-200 text-blue-600 text-xs">
                     <th className="p-3 font-bold">Name</th>
                     <th className="p-3 font-bold">Phone</th>
                     <th className="p-3 font-bold">Vehicles</th>
@@ -90,7 +90,7 @@ export function Customers() {
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
           <Card className="w-full max-w-md bg-white border-slate-200 shadow-xl">
             <CardContent className="p-6">
-              <h2 className="text-xl font-heading font-extrabold text-slate-900 mb-6">Add New Customer</h2>
+              <h2 className="text-xl font-heading font-bold text-slate-900 mb-6">Add New Customer</h2>
               <div className="space-y-4">
                 <input placeholder="Full Name" className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-2 text-sm" 
                        value={newCustomer.name} onChange={e => setNewCustomer({...newCustomer, name: e.target.value})} />
@@ -154,7 +154,7 @@ export function Vehicles() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-heading font-extrabold tracking-widest text-slate-900 uppercase">Vehicle Directory</h1>
+        <h1 className="text-xl font-heading font-bold text-slate-900">Vehicle Directory</h1>
         <Button variant="primary" onClick={() => setAddModal(true)}>ADD VEHICLE</Button>
       </div>
 
@@ -162,14 +162,14 @@ export function Vehicles() {
         <CardHeader><CardTitle>ALL VEHICLES</CardTitle></CardHeader>
         <CardContent>
           {loading ? (
-            <div className="py-12 text-center text-slate-500 text-sm uppercase tracking-widest font-bold">Loading...</div>
+            <div className="py-12 text-center text-slate-500 text-sm font-bold">Loading...</div>
           ) : vehicles.length === 0 ? (
-            <div className="py-12 text-center text-slate-500 text-sm uppercase tracking-widest font-bold">No Vehicles Found</div>
+            <div className="py-12 text-center text-slate-500 text-sm font-bold">No Vehicles Found</div>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left border-collapse">
                 <thead>
-                  <tr className="border-b border-slate-200 text-blue-600 text-xs uppercase tracking-widest">
+                  <tr className="border-b border-slate-200 text-blue-600 text-xs">
                     <th className="p-3 font-bold">Reg Number</th>
                     <th className="p-3 font-bold">Company / Make</th>
                     <th className="p-3 font-bold">Model</th>
@@ -197,7 +197,7 @@ export function Vehicles() {
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
           <Card className="w-full max-w-md bg-white border-slate-200 shadow-xl">
             <CardContent className="p-6">
-              <h2 className="text-xl font-heading font-extrabold text-slate-900 mb-6">Register Vehicle</h2>
+              <h2 className="text-xl font-heading font-bold text-slate-900 mb-6">Register Vehicle</h2>
               <div className="space-y-4">
                 <select 
                   className="w-full bg-slate-50 border border-slate-200 text-slate-900 p-2 text-sm"

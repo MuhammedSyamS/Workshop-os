@@ -77,7 +77,7 @@ export default function Login() {
           <div className="w-12 h-12 bg-blue-600 flex items-center justify-center mb-4">
             <Wrench size={24} className="text-white" />
           </div>
-          <h1 className="text-2xl font-heading font-extrabold text-slate-900 tracking-tight uppercase">Workshop OS</h1>
+          <h1 className="text-2xl font-heading font-bold text-slate-900 tracking-tight">Workshop OS</h1>
           <p className="text-sm font-body text-slate-500 mt-1">Enterprise Management System</p>
         </div>
 
@@ -88,13 +88,13 @@ export default function Login() {
           <CardContent>
             <div className="flex bg-slate-100 p-1 mb-6 rounded-md">
               <button 
-                className={`flex-1 py-2 text-sm font-bold uppercase tracking-widest transition-colors ${loginType === 'ADMIN' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                className={`flex-1 py-2 text-sm font-bold transition-colors ${loginType === 'ADMIN' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
                 onClick={() => setLoginType('ADMIN')}
               >
                 Admin
               </button>
               <button 
-                className={`flex-1 py-2 text-sm font-bold uppercase tracking-widest transition-colors ${loginType === 'EMPLOYEE' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                className={`flex-1 py-2 text-sm font-bold transition-colors ${loginType === 'EMPLOYEE' ? 'bg-white text-blue-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
                 onClick={() => setLoginType('EMPLOYEE')}
               >
                 Employee
@@ -151,7 +151,7 @@ export default function Login() {
         </Card>
         </div>
         
-        <p className="text-center text-xs text-slate-400 mt-8 uppercase tracking-widest font-bold">
+        <p className="text-center text-sm text-slate-400 mt-8 font-medium">
           CONFIDENTIAL SYSTEM &copy; {new Date().getFullYear()}
         </p>
       </div>

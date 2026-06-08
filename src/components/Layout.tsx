@@ -8,17 +8,17 @@ import {
 import { useAuthStore } from '../store/authStore';
 
 const MENU_ITEMS = [
-  { path: '/profile', label: 'My Profile', icon: UserCircle },
+  { path: '/profile', label: 'Profile', icon: UserCircle },
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/jobs', label: 'Job Orders', icon: Wrench },
+  { path: '/schedule', label: 'Schedule', icon: Calendar },
   { path: '/customers', label: 'Customers', icon: Users },
   { path: '/vehicles', label: 'Vehicles', icon: CarFront },
   { path: '/employees', label: 'Employees', icon: Users },
-  { path: '/invoices', label: 'Tax Invoices', icon: FileText },
-  { path: '/customer-bills', label: 'Customer Bills', icon: Receipt },
-  { path: '/bills', label: 'Workshop Expenses', icon: Receipt },
+  { path: '/invoices', label: 'Invoices', icon: FileText },
+  { path: '/customer-bills', label: 'Cust. Bills', icon: Receipt },
+  { path: '/bills', label: 'Expenses', icon: Receipt },
   { path: '/inventory', label: 'Inventory', icon: Package },
-  { path: '/schedule', label: 'Schedule', icon: Calendar },
   { path: '/reports', label: 'Reports', icon: BarChart3 },
   { path: '/settings', label: 'Settings', icon: Settings },
 ];
@@ -26,7 +26,7 @@ const MENU_ITEMS = [
 export default function Layout() {
   const { user, token, logout } = useAuthStore();
   const location = useLocation();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   if (!token || !user) {
     return <Navigate to="/login" replace />;
@@ -43,41 +43,24 @@ export default function Layout() {
     }
   });
 
-  return (
-    <div className="flex h-screen bg-slate-50 text-slate-900 overflow-hidden">
-      
-      {/* Mobile Overlay */}
-      {isSidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-black/60 z-40 lg:hidden backdrop-blur-sm" 
-          onClick={() => setIsSidebarOpen(false)} 
-        />
-      )}
+  const mainTabs = [
+    { path: '/dashboard', label: 'Home', icon: LayoutDashboard },
+    { path: '/jobs', label: 'Jobs', icon: Wrench },
+    { path: '/schedule', label: 'Schedule', icon: Calendar },
+  ].filter(tab => visibleMenuItems.some(v => v.path === tab.path));
 
-      {/* Sidebar */}
-      <aside className={`
-        fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 flex flex-col
-        transform transition-transform duration-300 ease-in-out
-        lg:relative lg:translate-x-0
-        ${isSidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'}
-      `}>
-        {/* Brand */}
-        <div className="h-16 flex items-center justify-between px-6 border-b border-slate-200">
-          <div className="flex items-center">
-            <div className="w-8 h-8 bg-blue-600 flex items-center justify-center mr-3 rounded-sm shadow-inner">
-              <Wrench size={16} className="text-white" />
-            </div>
-            <span className="font-heading font-extrabold tracking-widest uppercase text-xs md:text-sm">Workshop OS</span>
+  return (
+    <div className="flex h-screen bg-slate-50 text-slate-900 overflow-hidden font-body">
+      
+      {/* Desktop Sidebar */}
+      <aside className="hidden lg:flex inset-y-0 left-0 z-50 w-64 bg-white border-r border-slate-200 flex-col">
+        <div className="h-16 flex items-center px-6 border-b border-slate-100">
+          <div className="w-8 h-8 bg-blue-600 flex items-center justify-center mr-3 rounded-lg shadow-sm">
+            <Wrench size={16} className="text-white" />
           </div>
-          <button 
-            className="lg:hidden text-slate-400 hover:text-slate-900"
-            onClick={() => setIsSidebarOpen(false)}
-          >
-            <X size={20} />
-          </button>
+          <span className="font-heading font-bold tracking-tight text-slate-900">Workshop OS</span>
         </div>
 
-        {/* Nav Links */}
         <nav className="flex-1 overflow-y-auto py-4 custom-scrollbar">
           <ul className="space-y-1 px-3">
             {visibleMenuItems.map((item) => {
@@ -86,17 +69,9 @@ export default function Layout() {
                 <li key={item.path}>
                   <Link
                     to={item.path}
-                    onClick={() => setIsSidebarOpen(false)}
-                    className={`
-                      flex items-center gap-3 px-3 py-2.5 text-xs font-bold uppercase tracking-widest rounded-sm
-                      transition-all border-l-4 
-                      ${isActive 
-                        ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm' 
-                        : 'border-transparent text-slate-500 hover:bg-slate-100 hover:text-slate-900'
-                      }
-                    `}
+                    className={`flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-lg transition-all ${isActive ? 'bg-blue-50 text-blue-700' : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900' }`}
                   >
-                    <item.icon size={16} strokeWidth={isActive ? 2.5 : 2} />
+                    <item.icon size={18} strokeWidth={isActive ? 2.5 : 2} />
                     {item.label}
                   </Link>
                 </li>
@@ -105,53 +80,127 @@ export default function Layout() {
           </ul>
         </nav>
 
-        {/* User Info & Logout */}
-        <div className="p-4 border-t border-slate-200 bg-slate-50">
+        <div className="p-4 border-t border-slate-100 bg-white">
           <div className="flex items-center justify-between mb-4 px-2">
             <div>
-              <p className="text-xs font-bold uppercase text-slate-900 truncate max-w-[150px]">{user.name}</p>
-              <p className="text-[10px] uppercase tracking-widest text-blue-600 font-extrabold">{user.role}</p>
+              <p className="text-sm font-semibold text-slate-900 truncate max-w-[150px]">{user.name}</p>
+              <p className="text-xs text-blue-600 font-medium">{user.role}</p>
             </div>
           </div>
           <button
             onClick={logout}
-            className="w-full flex items-center justify-center gap-2 py-2.5 text-xs font-extrabold uppercase tracking-widest text-slate-500 hover:text-red-600 hover:bg-red-50 border border-transparent hover:border-red-200 rounded-sm transition-all"
+            className="w-full flex items-center justify-center gap-2 py-2 text-sm font-medium text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
           >
-            <LogOut size={14} strokeWidth={2.5} />
+            <LogOut size={16} />
             Sign Out
           </button>
         </div>
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* Top Header */}
-        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 shadow-sm relative z-30">
-          <div className="flex items-center gap-4">
-            <button 
-              className="lg:hidden text-slate-500 hover:text-blue-600 p-1"
-              onClick={() => setIsSidebarOpen(true)}
-            >
-              <Menu size={24} />
-            </button>
-            <div className="font-heading font-extrabold text-sm tracking-widest text-slate-800 uppercase hidden sm:block">
-              {location.pathname.substring(1) || 'dashboard'}
+      <div className="flex-1 flex flex-col min-w-0 relative">
+        
+        {/* Top Header (Mobile & Desktop) */}
+        <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 shadow-sm z-30">
+          <div className="flex items-center gap-3 lg:hidden">
+            <div className="w-8 h-8 bg-blue-600 flex items-center justify-center rounded-lg shadow-sm">
+              <Wrench size={16} className="text-white" />
             </div>
+            <span className="font-heading font-bold text-slate-900 tracking-tight">Workshop OS</span>
           </div>
-          <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest text-slate-500">
-            <span className="hidden sm:inline">System Status:</span>
-            <span className="flex items-center gap-2 px-3 py-1 bg-green-50 text-green-700 rounded-full border border-green-200">
+          
+          <div className="hidden lg:block font-heading font-semibold text-lg text-slate-800 capitalize">
+            {location.pathname.substring(1).replace('-', ' ') || 'Dashboard'}
+          </div>
+
+          <div className="flex items-center gap-4 text-xs font-medium text-slate-500">
+            <span className="flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 rounded-full border border-green-200">
               <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-              Online
+              <span className="hidden sm:inline">Online</span>
             </span>
           </div>
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-auto p-4 lg:p-8 bg-slate-50 custom-scrollbar">
+        <main className="flex-1 overflow-auto p-4 lg:p-8 bg-slate-50 custom-scrollbar pb-24 lg:pb-8">
           <Outlet />
         </main>
       </div>
+
+      {/* Mobile Bottom Navigation */}
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 h-16 bg-white border-t border-slate-200 flex items-center justify-around z-40 pb-2">
+        {mainTabs.map((tab) => {
+          const isActive = location.pathname.startsWith(tab.path);
+          return (
+            <Link 
+              key={tab.path} 
+              to={tab.path}
+              className={`flex flex-col items-center justify-center w-full h-full space-y-1 pt-1 ${isActive ? 'text-blue-600' : 'text-slate-500 hover:text-slate-900'}`}
+            >
+              <tab.icon size={20} strokeWidth={isActive ? 2.5 : 2} />
+              <span className="text-[10px] font-medium">{tab.label}</span>
+            </Link>
+          );
+        })}
+        <button 
+          onClick={() => setIsMobileMenuOpen(true)}
+          className="flex flex-col items-center justify-center w-full h-full space-y-1 pt-1 text-slate-500 hover:text-slate-900"
+        >
+          <Menu size={20} />
+          <span className="text-[10px] font-medium">More</span>
+        </button>
+      </nav>
+
+      {/* Mobile "More" Menu Full Screen Overlay */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden fixed inset-0 z-50 bg-white flex flex-col animate-in slide-in-from-bottom-2 duration-200">
+          <div className="h-16 flex items-center justify-between px-4 border-b border-slate-100">
+            <span className="font-heading font-bold text-lg text-slate-900 tracking-tight">Menu</span>
+            <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-slate-500 hover:bg-slate-100 rounded-full">
+              <X size={24} />
+            </button>
+          </div>
+          
+          <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
+            <div className="flex items-center gap-4 mb-6 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+              <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-bold text-lg shadow-inner">
+                {user.name[0].toUpperCase()}
+              </div>
+              <div>
+                <p className="font-semibold text-slate-900 text-base">{user.name}</p>
+                <p className="text-xs text-slate-500 font-medium mt-0.5">{user.role}</p>
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              {visibleMenuItems.map((item) => {
+                const isActive = location.pathname.startsWith(item.path);
+                return (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`flex items-center gap-4 px-4 py-3.5 rounded-xl transition-colors ${isActive ? 'bg-blue-50 text-blue-700 font-semibold' : 'text-slate-700 font-medium active:bg-slate-50'}`}
+                  >
+                    <item.icon size={20} className={isActive ? 'text-blue-600' : 'text-slate-400'} />
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+          
+          <div className="p-4 border-t border-slate-100 pb-8">
+            <button
+              onClick={() => { logout(); setIsMobileMenuOpen(false); }}
+              className="w-full flex items-center justify-center gap-2 py-3.5 text-red-600 font-semibold bg-red-50 rounded-xl active:bg-red-100 transition-colors"
+            >
+              <LogOut size={18} />
+              Sign Out
+            </button>
+          </div>
+        </div>
+      )}
 
     </div>
   );

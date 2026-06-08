@@ -29,27 +29,27 @@ export function Reports() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-heading font-extrabold tracking-widest text-slate-900 uppercase">Analytics & Reports</h1>
+        <h1 className="text-xl font-heading font-bold text-slate-900">Analytics & Reports</h1>
       </div>
       
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card>
           <CardContent className="p-6">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Total Jobs Logged</p>
-            <p className="text-4xl font-heading font-extrabold text-slate-900">{kpi.totalJobs}</p>
+            <p className="text-sm font-medium text-slate-500 mb-2">Total Jobs Logged</p>
+            <p className="text-4xl font-heading font-bold text-slate-900">{kpi.totalJobs}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-6 border-b-4 border-blue-600">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Active Jobs in Queue</p>
-            <p className="text-4xl font-heading font-extrabold text-blue-600">{kpi.activeJobs}</p>
+            <p className="text-sm font-medium text-slate-500 mb-2">Active Jobs in Queue</p>
+            <p className="text-4xl font-heading font-bold text-blue-600">{kpi.activeJobs}</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-6">
-            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Total Revenue Confirmed</p>
-            <p className="text-4xl font-heading font-extrabold text-[#10B981]">${kpi.totalRevenue.toLocaleString()}</p>
+            <p className="text-sm font-medium text-slate-500 mb-2">Total Revenue Confirmed</p>
+            <p className="text-4xl font-heading font-bold text-[#10B981]">${kpi.totalRevenue.toLocaleString()}</p>
           </CardContent>
         </Card>
       </div>

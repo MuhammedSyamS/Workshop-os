@@ -36,12 +36,12 @@ export default function PrintInvoice() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start border-b-2 border-black pb-6 mb-6 gap-4">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-black uppercase tracking-tighter mb-2">WORKSHOP OS</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tighter mb-2">WORKSHOP OS</h1>
           <p className="text-sm font-medium">123 Auto Street, Motor City</p>
           <p className="text-sm font-medium">Phone: +91 9876543210 | GSTIN: 22AAAAA0000A1Z5</p>
         </div>
         <div className="text-left sm:text-right">
-          <h2 className="text-2xl sm:text-3xl font-bold uppercase tracking-widest text-slate-800">
+          <h2 className="text-2xl sm:text-3xl font-bold text-slate-800">
             {isInvoice ? 'TAX INVOICE' : 'ESTIMATE / BILL'}
           </h2>
           <p className="font-bold text-lg mt-2">#{data.invoice_number || data.id.slice(-6).toUpperCase()}</p>
@@ -52,12 +52,12 @@ export default function PrintInvoice() {
       {/* Customer & Vehicle Info */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12 mb-8">
         <div>
-          <h3 className="font-bold text-sm uppercase tracking-widest border-b border-black pb-1 mb-3">Billed To</h3>
+          <h3 className="font-bold text-sm border-b border-black pb-1 mb-3">Billed To</h3>
           <p className="font-bold text-lg">{data.job_order?.customer?.name || 'Walk-in Customer'}</p>
           <p>{data.job_order?.customer?.phone}</p>
         </div>
         <div>
-          <h3 className="font-bold text-sm uppercase tracking-widest border-b border-black pb-1 mb-3">Vehicle Details</h3>
+          <h3 className="font-bold text-sm border-b border-black pb-1 mb-3">Vehicle Details</h3>
           <p className="font-bold text-lg">{data.job_order?.vehicle?.reg_number}</p>
           <p>{data.job_order?.vehicle?.make} {data.job_order?.vehicle?.model}</p>
           <p className="text-sm mt-1">Job Card #{data.job_order?.id.slice(-6).toUpperCase()}</p>
@@ -68,10 +68,10 @@ export default function PrintInvoice() {
       <table className="w-full text-left mb-8 border-collapse">
         <thead>
           <tr className="border-b-2 border-black">
-            <th className="py-2 font-bold uppercase text-sm">Description</th>
-            <th className="py-2 font-bold uppercase text-sm text-center">Qty</th>
-            <th className="py-2 font-bold uppercase text-sm text-right">Rate</th>
-            <th className="py-2 font-bold uppercase text-sm text-right">Amount</th>
+            <th className="py-2 font-bold text-sm">Description</th>
+            <th className="py-2 font-bold text-sm text-center">Qty</th>
+            <th className="py-2 font-bold text-sm text-right">Rate</th>
+            <th className="py-2 font-bold text-sm text-right">Amount</th>
           </tr>
         </thead>
         <tbody>
@@ -90,18 +90,18 @@ export default function PrintInvoice() {
       <div className="flex justify-end">
         <div className="w-64 space-y-3">
           <div className="flex justify-between items-center text-sm">
-            <span className="font-bold uppercase">Subtotal</span>
+            <span className="font-bold">Subtotal</span>
             <span>₹{(data.subtotal || 0).toFixed(2)}</span>
           </div>
           {isInvoice && (
             <div className="flex justify-between items-center text-sm">
-              <span className="font-bold uppercase">Tax</span>
+              <span className="font-bold">Tax</span>
               <span>₹{(data.tax || 0).toFixed(2)}</span>
             </div>
           )}
           <div className="flex justify-between items-center border-t-2 border-black pt-3">
-            <span className="font-black uppercase text-xl">Total</span>
-            <span className="font-black text-xl">₹{(data.total_amount || data.total || 0).toFixed(2)}</span>
+            <span className="font-bold text-xl">Total</span>
+            <span className="font-bold text-xl">₹{(data.total_amount || data.total || 0).toFixed(2)}</span>
           </div>
         </div>
       </div>
@@ -121,7 +121,7 @@ export default function PrintInvoice() {
       <div className="fixed bottom-8 right-8 no-print">
         <button 
           onClick={() => window.print()} 
-          className="bg-black text-white px-6 py-3 font-bold uppercase tracking-widest shadow-xl rounded-full"
+          className="bg-black text-white px-6 py-3 font-bold shadow-xl rounded-full"
         >
           Print Document
         </button>

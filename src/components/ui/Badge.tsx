@@ -16,11 +16,7 @@ const variantStyles = {
 export function Badge({ className = '', variant = 'slate', children, ...props }: BadgeProps) {
   return (
     <span
-      className={`
-        inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-extrabold uppercase tracking-wider border shrink-0 shadow-sm
-        ${variantStyles[variant]}
-        ${className}
-      `}
+      className={`inline-flex items-center px-2.5 py-1 rounded-md text-[10px] font-bold border shrink-0 shadow-sm ${variantStyles[variant]} ${className}`}
       {...props}
     >
       {children}
