@@ -169,19 +169,19 @@ export default function JobBoard() {
                     <CardContent className="p-3">
                       <div className="flex justify-between items-start mb-2">
                         <span className="font-heading font-bold text-sm text-slate-900">
-                          {job.vehicle.reg_number}
-                          <span className="text-[10px] text-slate-500 ml-2">#{job.id.slice(-6).toUpperCase()}</span>
+                          {job?.vehicle?.reg_number || 'UNKNOWN'}
+                          <span className="text-[10px] text-slate-500 ml-2">#{String(job?.id || job?._id || '000000').slice(-6).toUpperCase()}</span>
                         </span>
                         <span className="text-[10px] text-slate-500">{new Date(job.created_at).toLocaleDateString()}</span>
                       </div>
                       <div className="text-sm font-medium text-slate-500 mb-1">
-                        {job.vehicle.make} {job.vehicle.model}
+                        {job?.vehicle?.make} {job?.vehicle?.model}
                       </div>
                       <div className="text-[11px] text-slate-500 mb-3 line-clamp-2 leading-relaxed">
                         {job.complaint}
                       </div>
                       <div className="pt-2 border-t border-slate-200 flex justify-between items-center" onClick={e => e.stopPropagation()}>
-                        <span className="text-[10px] text-blue-600 font-bold">{job.customer.name}</span>
+                        <span className="text-[10px] text-blue-600 font-bold">{job?.customer?.name || 'Unknown Customer'}</span>
                         <select 
                           value={job.status}
                           onChange={(e) => updateStatus(job.id, e.target.value)}
@@ -212,7 +212,7 @@ export default function JobBoard() {
               <div className="flex justify-between items-start mb-6">
                 <div>
                   <h2 className="text-2xl font-heading font-bold text-slate-900">
-                    JOB #{selectedJob.id.slice(-6).toUpperCase()}
+                    JOB #{String(selectedJob?.id || selectedJob?._id || '000000').slice(-6).toUpperCase()}
                   </h2>
                   <p className="text-sm text-slate-500 mt-1">
                     Created on {new Date(selectedJob.created_at).toLocaleString()}
