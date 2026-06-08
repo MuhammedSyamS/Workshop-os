@@ -284,7 +284,7 @@ export default function JobBoard() {
                   <h2 className="text-xl font-heading font-bold text-slate-900 mb-1">
                     {invoiceModal.type === 'INVOICE' ? 'Generate Tax Invoice' : 'Generate Bill'}
                   </h2>
-                  <p className="text-sm font-bold text-blue-600">Job #{invoiceModal.job.id.slice(-6).toUpperCase()}</p>
+                  <p className="text-sm font-bold text-blue-600">Job #{String(invoiceModal?.job?.id || invoiceModal?.job?._id || '000000').slice(-6).toUpperCase()}</p>
                 </div>
                 <Button variant="outline" onClick={() => setInvoiceModal(null)}>CLOSE</Button>
               </div>

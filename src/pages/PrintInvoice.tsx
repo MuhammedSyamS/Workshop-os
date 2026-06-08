@@ -44,7 +44,7 @@ export default function PrintInvoice() {
           <h2 className="text-2xl sm:text-3xl font-bold text-slate-800">
             {isInvoice ? 'TAX INVOICE' : 'ESTIMATE / BILL'}
           </h2>
-          <p className="font-bold text-lg mt-2">#{data.invoice_number || data.id.slice(-6).toUpperCase()}</p>
+          <p className="font-bold text-lg mt-2">#{data.invoice_number || String(data?.id || data?._id || '').slice(-6).toUpperCase()}</p>
           <p className="text-sm">Date: {new Date(data.created_at || Date.now()).toLocaleDateString()}</p>
         </div>
       </div>
@@ -60,7 +60,7 @@ export default function PrintInvoice() {
           <h3 className="font-bold text-sm border-b border-black pb-1 mb-3">Vehicle Details</h3>
           <p className="font-bold text-lg">{data.job_order?.vehicle?.reg_number}</p>
           <p>{data.job_order?.vehicle?.make} {data.job_order?.vehicle?.model}</p>
-          <p className="text-sm mt-1">Job Card #{data.job_order?.id.slice(-6).toUpperCase()}</p>
+          <p className="text-sm mt-1">Job Card #{String(data.job_order?.id || data.job_order?._id || '').slice(-6).toUpperCase()}</p>
         </div>
       </div>
 

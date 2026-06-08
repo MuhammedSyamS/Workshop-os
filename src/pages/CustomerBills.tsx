@@ -96,15 +96,15 @@ export function CustomerBills() {
                 <tbody>
                   {bills.map(bill => {
                     const billUrl = `${window.location.origin}/print/invoice/${bill.id}`;
-                    const waText = encodeURIComponent(`Hello ${bill.job_order?.customer?.name || ''},\n\nHere is your bill for Job #${bill.job_order?.id?.slice(-6).toUpperCase() || ''}.\n*Total Amount:* ₹${(bill.total_amount || bill.total || 0).toFixed(2)}\n\n*View & Download your Bill here:*\n${billUrl}\n\nThank you for choosing us!`);
+                    const waText = encodeURIComponent(`Hello ${bill.job_order?.customer?.name || ''},\n\nHere is your bill for Job #${String(bill.job_order?.id || bill.job_order?._id || '').slice(-6).toUpperCase()}.\n*Total Amount:* ₹${(bill.total_amount || bill.total || 0).toFixed(2)}\n\n*View & Download your Bill here:*\n${billUrl}\n\nThank you for choosing us!`);
                     let cleanPhone = (bill.job_order?.customer?.phone || '').replace(/\D/g, '');
                     if (cleanPhone.length === 10) cleanPhone = '91' + cleanPhone;
                     const waLink = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${waText}`;
 
                     return (
                       <tr key={bill.id} className="border-b border-slate-200 hover:bg-blue-50 transition-colors text-sm text-slate-900">
-                        <td className="p-3 font-bold">{bill.invoice_number || bill.id?.slice(-6).toUpperCase()}</td>
-                        <td className="p-3 text-slate-500">#{bill.job_order?.id?.slice(-6).toUpperCase() || bill.job_order_id?.slice(-6).toUpperCase() || 'N/A'}</td>
+                        <td className="p-3 font-bold">{bill.invoice_number || String(bill.id || bill._id || '').slice(-6).toUpperCase()}</td>
+                        <td className="p-3 text-slate-500">#{String(bill.job_order?.id || bill.job_order?._id || bill.job_order_id || 'N/A').slice(-6).toUpperCase()}</td>
                         <td className="p-3 font-medium">{bill.job_order?.customer?.name || 'Unknown'}</td>
                         <td className="p-3 text-right">
                           <span className="font-bold text-blue-600">₹{(bill.total_amount || bill.total || 0).toFixed(2)}</span>
@@ -150,7 +150,7 @@ export function CustomerBills() {
                   <option value="">-- Select a Job --</option>
                   {jobs.map(job => (
                     <option key={job.id} value={job.id}>
-                      Job #{job.id.slice(-6).toUpperCase()} - {job.customer?.name} ({job.vehicle?.reg_number})
+                      Job #{String(job.id || job._id || '').slice(-6).toUpperCase()} - {job.customer?.name} ({job.vehicle?.reg_number})
                     </option>
                   ))}
                 </select>

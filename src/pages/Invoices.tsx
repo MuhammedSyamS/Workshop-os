@@ -97,15 +97,15 @@ export function Invoices() {
                 <tbody>
                   {invoices.map(inv => {
                     const invUrl = `${window.location.origin}/print/invoice/${inv.id}`;
-                    const waText = encodeURIComponent(`Hello ${inv.job_order?.customer?.name || ''},\n\nHere is your official Tax Invoice for Job #${inv.job_order?.id?.slice(-6).toUpperCase() || ''}.\n*Total Amount:* ₹${(inv.total_amount || inv.total || 0).toFixed(2)}\n\n*View & Download your Invoice here:*\n${invUrl}\n\nThank you for choosing us!`);
+                    const waText = encodeURIComponent(`Hello ${inv.job_order?.customer?.name || ''},\n\nHere is your official Tax Invoice for Job #${String(inv.job_order?.id || inv.job_order?._id || '').slice(-6).toUpperCase()}.\n*Total Amount:* ₹${(inv.total_amount || inv.total || 0).toFixed(2)}\n\n*View & Download your Invoice here:*\n${invUrl}\n\nThank you for choosing us!`);
                     let cleanPhone = (inv.job_order?.customer?.phone || '').replace(/\D/g, '');
                     if (cleanPhone.length === 10) cleanPhone = '91' + cleanPhone;
                     const waLink = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${waText}`;
 
                     return (
                       <tr key={inv.id} className="border-b border-slate-200 hover:bg-blue-50 transition-colors text-sm text-slate-900">
-                        <td className="p-3 font-bold">{inv.invoice_number || inv.id?.slice(-6).toUpperCase()}</td>
-                        <td className="p-3 text-slate-500">#{inv.job_order?.id?.slice(-6).toUpperCase() || inv.job_order_id?.slice(-6).toUpperCase() || 'N/A'}</td>
+                        <td className="p-3 font-bold">{inv.invoice_number || String(inv.id || inv._id || '').slice(-6).toUpperCase()}</td>
+                        <td className="p-3 text-slate-500">#{String(inv.job_order?.id || inv.job_order?._id || inv.job_order_id || 'N/A').slice(-6).toUpperCase()}</td>
                         <td className="p-3 font-medium">{inv.job_order?.customer?.name || 'Unknown'}</td>
                         <td className="p-3 text-right">
                           <span className="font-bold text-blue-600">₹{(inv.total_amount || inv.total || 0).toFixed(2)}</span>
@@ -151,7 +151,7 @@ export function Invoices() {
                   <option value="">-- Select a Job --</option>
                   {jobs.map(job => (
                     <option key={job.id} value={job.id}>
-                      Job #{job.id.slice(-6).toUpperCase()} - {job.customer?.name} ({job.vehicle?.reg_number})
+                      Job #{String(job.id || job._id || '').slice(-6).toUpperCase()} - {job.customer?.name} ({job.vehicle?.reg_number})
                     </option>
                   ))}
                 </select>
