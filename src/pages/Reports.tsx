@@ -16,8 +16,8 @@ export function Reports() {
   const fetchData = async () => {
     try {
       const [kpiRes, trendRes] = await Promise.all([
-        axios.get(`http://${window.location.hostname}:5000/api/reports/kpi`, { headers: { Authorization: `Bearer ${token}` } }),
-        axios.get(`http://${window.location.hostname}:5000/api/reports/revenue-trend`, { headers: { Authorization: `Bearer ${token}` } })
+        axios.get(`/api/reports/kpi`, { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get(`/api/reports/revenue-trend`, { headers: { Authorization: `Bearer ${token}` } })
       ]);
       setKpi(kpiRes.data);
       setTrend(trendRes.data);

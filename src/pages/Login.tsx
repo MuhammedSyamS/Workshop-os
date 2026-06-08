@@ -26,11 +26,11 @@ export default function Login() {
     try {
       // Setup default admin if requested
       if (userId === 'admin' && password === 'admin123') {
-        try { await axios.post(`http://${window.location.hostname}:5000/api/auth/setup`); } catch (e) { /* ignore */ }
+        try { await axios.post(`/api/auth/setup`); } catch (e) { /* ignore */ }
       }
 
       try {
-        const res = await axios.post(`http://${window.location.hostname}:5000/api/auth/login`, { userId, password });
+        const res = await axios.post(`/api/auth/login`, { userId, password });
         const user = res.data.user;
 
         if (loginType === 'ADMIN' && user.role !== 'OWNER' && user.role !== 'ADMIN') {

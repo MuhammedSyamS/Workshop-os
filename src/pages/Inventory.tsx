@@ -18,7 +18,7 @@ export function Inventory() {
 
   const fetchParts = async () => {
     try {
-      const res = await axios.get(`http://${window.location.hostname}:5000/api/parts`, { headers: { Authorization: `Bearer ${token}` }});
+      const res = await axios.get(`/api/parts`, { headers: { Authorization: `Bearer ${token}` }});
       setParts(res.data);
     } catch (e) {
       console.error(e);
@@ -29,7 +29,7 @@ export function Inventory() {
 
   const handleAddPart = async () => {
     try {
-      await axios.post(`http://${window.location.hostname}:5000/api/parts`, newPart, { headers: { Authorization: `Bearer ${token}` }});
+      await axios.post(`/api/parts`, newPart, { headers: { Authorization: `Bearer ${token}` }});
       setAddModal(false);
       setNewPart({ name: '', sku: '', stock_qty: '', unit_cost: '', reorder_level: '' });
       fetchParts();
@@ -40,7 +40,7 @@ export function Inventory() {
 
   const updateStock = async (id: string, change: number) => {
     try {
-      await axios.patch(`http://${window.location.hostname}:5000/api/parts/${id}/stock`, { change }, { headers: { Authorization: `Bearer ${token}` }});
+      await axios.patch(`/api/parts/${id}/stock`, { change }, { headers: { Authorization: `Bearer ${token}` }});
       fetchParts();
     } catch (e) {
       console.error(e);

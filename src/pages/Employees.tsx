@@ -20,7 +20,7 @@ export default function Employees() {
 
   const fetchEmployees = async () => {
     try {
-      const res = await axios.get(`http://${window.location.hostname}:5000/api/employees`, {
+      const res = await axios.get(`/api/employees`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setEmployees(res.data);
@@ -33,7 +33,7 @@ export default function Employees() {
 
   const handleAddEmployee = async () => {
     try {
-      await axios.post(`http://${window.location.hostname}:5000/api/employees`, newEmp, {
+      await axios.post(`/api/employees`, newEmp, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setIsAdding(false);
@@ -47,7 +47,7 @@ export default function Employees() {
 
   const markAttendance = async (id: string, status: string) => {
     try {
-      await axios.post(`http://${window.location.hostname}:5000/api/employees/${id}/attendance`, { status }, {
+      await axios.post(`/api/employees/${id}/attendance`, { status }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchEmployees();
@@ -59,7 +59,7 @@ export default function Employees() {
 
   const viewHistory = async (emp: any) => {
     try {
-      const res = await axios.get(`http://${window.location.hostname}:5000/api/employees/${emp.id}/attendance/history`, {
+      const res = await axios.get(`/api/employees/${emp.id}/attendance/history`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setHistoryModal({ isOpen: true, employee: emp, history: res.data });
@@ -71,7 +71,7 @@ export default function Employees() {
 
   const approveEmployee = async (id: string) => {
     try {
-      await axios.patch(`http://${window.location.hostname}:5000/api/employees/${id}/approve`, {}, {
+      await axios.patch(`/api/employees/${id}/approve`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchEmployees();

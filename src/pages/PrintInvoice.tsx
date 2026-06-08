@@ -11,7 +11,7 @@ export default function PrintInvoice() {
   useEffect(() => {
     const fetchDoc = async () => {
       try {
-        const res = await axios.get(`http://${window.location.hostname}:5000/api/invoices/${id}`, {
+        const res = await axios.get(`/api/invoices/${id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         if (res.data) {

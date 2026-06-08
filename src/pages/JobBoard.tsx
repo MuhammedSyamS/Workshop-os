@@ -30,7 +30,7 @@ export default function JobBoard() {
 
   const fetchEmployees = async () => {
     try {
-      const res = await axios.get(`http://${window.location.hostname}:5000/api/employees`, {
+      const res = await axios.get(`/api/employees`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setEmployees(res.data);
@@ -41,7 +41,7 @@ export default function JobBoard() {
 
   const fetchJobs = async () => {
     try {
-      const res = await axios.get(`http://${window.location.hostname}:5000/api/jobs`, {
+      const res = await axios.get(`/api/jobs`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setJobs(res.data);
@@ -54,7 +54,7 @@ export default function JobBoard() {
 
   const updateStatus = async (id: string, status: string) => {
     try {
-      await axios.patch(`http://${window.location.hostname}:5000/api/jobs/${id}/status`, { status }, {
+      await axios.patch(`/api/jobs/${id}/status`, { status }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchJobs();
@@ -65,7 +65,7 @@ export default function JobBoard() {
 
   const handleCreateJob = async () => {
     try {
-      await axios.post(`http://${window.location.hostname}:5000/api/jobs`, newJob, {
+      await axios.post(`/api/jobs`, newJob, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setIsCreating(false);
@@ -95,7 +95,7 @@ export default function JobBoard() {
     if (validItems.length === 0) return alert('Please add at least one valid line item with a description.');
 
     try {
-      await axios.post(`http://${window.location.hostname}:5000/api/invoices`, {
+      await axios.post(`/api/invoices`, {
         job_order_id: invoiceModal.job.id,
         type: invoiceModal.type,
         line_items: validItems,

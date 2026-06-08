@@ -28,7 +28,7 @@ export default function Signup() {
         'ADMIN': 'ADMIN',
         'EMPLOYEE': 'MECHANIC'
       };
-      await axios.post(`http://${window.location.hostname}:5000/api/auth/signup`, { 
+      await axios.post(`/api/auth/signup`, { 
         userId,
         name, 
         email, 
