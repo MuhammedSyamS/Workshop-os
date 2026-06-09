@@ -66,6 +66,7 @@ export function Customers() {
                     <th className="p-3 font-bold">Name</th>
                     <th className="p-3 font-bold">Phone</th>
                     <th className="p-3 font-bold">Vehicles</th>
+                    <th className="p-3 font-bold w-1/4">Active Jobs</th>
                     <th className="p-3 font-bold">Joined</th>
                   </tr>
                 </thead>
@@ -74,8 +75,25 @@ export function Customers() {
                     <tr key={c.id} className="border-b border-slate-200 hover:bg-blue-50 transition-colors text-sm text-slate-900">
                       <td className="p-3 font-bold">{c.name}</td>
                       <td className="p-3 text-slate-500">{c.phone}</td>
-                      <td className="p-3">{c.vehicles?.map((v:any) => v.reg_number).join(', ') || 'None'}</td>
-                      <td className="p-3 text-slate-500">{new Date(c.created_at).toLocaleDateString()}</td>
+                      <td className="p-3 text-slate-500">{c.vehicles?.map((v:any) => v.reg_number).join(', ') || 'None'}</td>
+                      <td className="p-3">
+                        {c.active_jobs && c.active_jobs.length > 0 ? (
+                           <div className="flex flex-col gap-2">
+                             {c.active_jobs.map((job: any) => (
+                               <div key={job._id} className="text-xs bg-slate-100 border border-slate-200 rounded-md p-2">
+                                 <span className="font-bold text-blue-700 bg-blue-100 px-1.5 py-0.5 rounded-sm">{job.status}</span>
+                                 <div className="text-slate-700 mt-1.5 font-medium">
+                                   {job.vehicle_id?.make} {job.vehicle_id?.model} <span className="text-slate-500">({job.vehicle_id?.reg_number})</span>
+                                 </div>
+                                 <div className="text-slate-500 mt-0.5">
+                                   Mechanic: <span className="font-medium text-slate-700">{job.assigned_to?.name || 'Unassigned'}</span>
+                                 </div>
+                               </div>
+                             ))}
+                           </div>
+                        ) : <span className="text-slate-400 italic text-xs">No active jobs</span>}
+                      </td>
+                      <td className="p-3 text-slate-500 text-xs">{new Date(c.created_at).toLocaleDateString()}</td>
                     </tr>
                   ))}
                 </tbody>
