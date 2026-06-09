@@ -7,15 +7,16 @@ export default function Dashboard() {
       {/* KPI Row - Compact Grid for Mobile */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: 'Active Jobs', val: '24' },
-          { label: 'Revenue', val: '₹3,450' },
-          { label: 'Mechanics', val: '8/10' },
-          { label: 'Invoices', val: '12' }
+          { label: 'ACTIVE JOBS', val: '24', color: 'from-blue-500 to-blue-600', text: 'text-blue-100' },
+          { label: 'REVENUE', val: '₹3,450', color: 'from-emerald-500 to-emerald-600', text: 'text-emerald-100' },
+          { label: 'MECHANICS', val: '8/10', color: 'from-violet-500 to-violet-600', text: 'text-violet-100' },
+          { label: 'INVOICES', val: '12', color: 'from-amber-500 to-amber-600', text: 'text-amber-100' }
         ].map((kpi, i) => (
-          <Card key={i} className="border border-slate-100 shadow-sm bg-white">
-            <CardContent className="p-4 flex flex-col justify-center">
-              <p className="text-xs font-medium text-slate-500 mb-0.5">{kpi.label}</p>
-              <p className="text-2xl font-bold text-slate-900">{kpi.val}</p>
+          <Card key={i} className={`border-0 shadow-lg bg-gradient-to-br ${kpi.color} text-white transform transition-transform active:scale-95`}>
+            <CardContent className="p-5 flex flex-col justify-center relative overflow-hidden">
+              <div className="absolute -right-4 -top-4 w-16 h-16 bg-white/10 rounded-full blur-xl" />
+              <p className={`text-[10px] font-bold tracking-widest ${kpi.text} mb-1 uppercase`}>{kpi.label}</p>
+              <p className="text-3xl font-heading font-extrabold tracking-tight text-white drop-shadow-sm">{kpi.val}</p>
             </CardContent>
           </Card>
         ))}

@@ -50,10 +50,10 @@ export default function Layout() {
   ].filter(tab => visibleMenuItems.some(v => v.path === tab.path));
 
   return (
-    <div className="flex h-screen bg-slate-50 text-slate-900 overflow-hidden font-body">
+    <div className="flex min-h-screen bg-slate-50 text-slate-900 font-body">
       
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:flex inset-y-0 left-0 z-50 w-64 shrink-0 bg-white border-r border-slate-200 flex-col">
+      <aside className="hidden lg:flex fixed inset-y-0 left-0 z-50 w-64 shrink-0 bg-white border-r border-slate-200 flex-col shadow-lg">
         <div className="h-16 flex items-center px-6 border-b border-slate-100">
           <div className="w-8 h-8 bg-blue-600 flex items-center justify-center mr-3 rounded-lg shadow-sm">
             <Wrench size={16} className="text-white" />
@@ -98,31 +98,31 @@ export default function Layout() {
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 relative">
+      <div className="flex-1 flex flex-col min-w-0 relative lg:ml-64">
         
         {/* Top Header (Mobile & Desktop) */}
-        <header className="h-16 shrink-0 bg-white border-b border-slate-200 flex items-center justify-between px-4 lg:px-8 shadow-sm z-30">
-          <div className="flex items-center gap-3 lg:hidden">
-            <div className="w-8 h-8 bg-blue-600 flex items-center justify-center rounded-lg shadow-sm">
-              <Wrench size={16} className="text-white" />
+        <header className="sticky top-0 h-16 shrink-0 bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-700 lg:bg-none lg:bg-white lg:border-b lg:border-slate-200 flex items-center justify-between px-4 lg:px-8 shadow-md lg:shadow-sm z-30 transition-all">
+          <div className="flex items-center gap-3 lg:hidden text-white">
+            <div className="w-9 h-9 bg-white/20 backdrop-blur-sm flex items-center justify-center rounded-xl shadow-inner border border-white/10">
+              <Wrench size={18} className="text-white" />
             </div>
-            <span className="font-heading font-bold text-slate-900 tracking-tight">Workshop OS</span>
+            <span className="font-heading font-bold text-lg tracking-tight drop-shadow-sm">Workshop OS</span>
           </div>
           
           <div className="hidden lg:block font-heading font-semibold text-lg text-slate-800 capitalize">
             {location.pathname.substring(1).replace('-', ' ') || 'Dashboard'}
           </div>
 
-          <div className="flex items-center gap-4 text-xs font-medium text-slate-500">
-            <span className="flex items-center gap-2 px-3 py-1.5 bg-green-50 text-green-700 rounded-full border border-green-200">
-              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-              <span className="hidden sm:inline">Online</span>
+          <div className="flex items-center gap-4 text-xs font-medium">
+            <span className="flex items-center gap-2 px-3 py-1.5 bg-green-400/20 lg:bg-green-50 text-green-100 lg:text-green-700 rounded-full border border-green-400/30 lg:border-green-200 backdrop-blur-sm">
+              <span className="w-2 h-2 bg-green-400 lg:bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(74,222,128,0.8)]" />
+              <span className="hidden sm:inline font-bold tracking-wide">ONLINE</span>
             </span>
           </div>
         </header>
 
         {/* Page Content */}
-        <main className="flex-1 overflow-auto p-4 lg:p-8 bg-slate-50 custom-scrollbar pb-24 lg:pb-8">
+        <main className="flex-1 p-4 lg:p-8 bg-slate-50 pb-24 lg:pb-8 max-w-[100vw]">
           <Outlet />
         </main>
       </div>
@@ -137,8 +137,8 @@ export default function Layout() {
               to={tab.path}
               className={`flex flex-col items-center justify-center w-full h-full space-y-1 pt-1 ${isActive ? 'text-blue-600' : 'text-slate-500 hover:text-slate-900'}`}
             >
-              <tab.icon size={20} strokeWidth={isActive ? 2.5 : 2} />
-              <span className="text-[10px] font-medium">{tab.label}</span>
+              <tab.icon size={22} strokeWidth={isActive ? 2.5 : 2} className="mb-0.5" />
+              <span className="text-[10px] font-bold tracking-wide">{tab.label.toUpperCase()}</span>
             </Link>
           );
         })}

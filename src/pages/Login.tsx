@@ -30,7 +30,7 @@ export default function Login() {
       }
 
       try {
-        const res = await axios.post(`/api/auth/login`, { userId, password });
+        const res = await axios.post(`/api/auth/login`, { userId, password }, { timeout: 8000 });
         const user = res.data.user;
 
         if (loginType === 'ADMIN' && user.role !== 'OWNER' && user.role !== 'ADMIN') {
@@ -69,16 +69,20 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 sm:p-6">
-      <div className="w-full max-w-md mx-auto">
-        <div className="bg-white p-6 sm:p-8 rounded-xl border border-slate-200 shadow-xl relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 flex items-center justify-center p-4 sm:p-6 font-body relative overflow-hidden">
+      {/* Decorative blurred blobs */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-blue-500/20 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-500/20 rounded-full blur-[100px] translate-x-1/3 translate-y-1/3" />
+      
+      <div className="w-full max-w-md mx-auto relative z-10">
+        <div className="bg-white/95 backdrop-blur-xl p-6 sm:p-8 rounded-2xl shadow-2xl border border-white/20 relative overflow-hidden">
         
         <div className="flex flex-col items-center mb-8">
-          <div className="w-12 h-12 bg-blue-600 flex items-center justify-center mb-4">
-            <Wrench size={24} className="text-white" />
+          <div className="w-14 h-14 bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center mb-4 rounded-2xl shadow-lg border border-white/10">
+            <Wrench size={28} className="text-white" />
           </div>
-          <h1 className="text-2xl font-heading font-bold text-slate-900 tracking-tight">Workshop OS</h1>
-          <p className="text-sm font-body text-slate-500 mt-1">Enterprise Management System</p>
+          <h1 className="text-3xl font-heading font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-slate-700 tracking-tight">Workshop OS</h1>
+          <p className="text-sm font-bold tracking-widest text-blue-600/80 mt-1 uppercase">Enterprise Management</p>
         </div>
 
         <Card>
@@ -151,7 +155,7 @@ export default function Login() {
         </Card>
         </div>
         
-        <p className="text-center text-sm text-slate-400 mt-8 font-medium">
+        <p className="text-center text-xs text-slate-400 mt-8 font-bold tracking-widest uppercase">
           CONFIDENTIAL SYSTEM &copy; {new Date().getFullYear()}
         </p>
       </div>
