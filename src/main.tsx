@@ -4,6 +4,7 @@ import App from './App.tsx'
 import { ThemeProvider, UserProvider, ToastProvider } from './context/AppContext.tsx'
 import { ErrorBoundary } from './components/ErrorBoundary.tsx'
 import axios from 'axios';
+import { useAuthStore } from './store/authStore';
 
 // Global Axios Configuration
 axios.defaults.baseURL = import.meta.env.VITE_API_URL || '';
@@ -17,7 +18,13 @@ axios.interceptors.response.use(
     }
     return response;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+      console.warn('Session expired or invalid token. Logging out...');
+      useAuthStore.getState().logout();
+    }
+    return Promise.reject(error);
+  }
 );
 
 createRoot(document.getElementById('root')!).render(
