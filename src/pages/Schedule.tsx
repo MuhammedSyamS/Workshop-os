@@ -35,6 +35,9 @@ export function Schedule() {
   };
 
   const handleBookSlot = async () => {
+    if (!newAppt.customer_id || !newAppt.vehicle_id || !newAppt.appointment_date) {
+      return alert('Please select a customer, vehicle, and date.');
+    }
     try {
       await axios.post(`/api/appointments`, newAppt, { headers: { Authorization: `Bearer ${token}` }});
       setAddModal(false);
