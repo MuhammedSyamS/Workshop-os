@@ -110,6 +110,7 @@ export default function Bills() {
                 <option value="SUPPLIES">Workshop Supplies</option>
                 <option value="SOFTWARE">Software & IT</option>
                 <option value="MARKETING">Marketing & Advertising</option>
+                <option value="AFTER_WORK">After Work</option>
                 <option value="OTHER">Other Expense</option>
               </select>
 
