@@ -3,9 +3,11 @@ import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
+import { useToast } from '../context/AppContext';
 
 export default function Bills() {
   const { token } = useAuthStore();
+  const toast = useToast();
   const [bills, setBills] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
@@ -36,9 +38,10 @@ export default function Bills() {
       setIsAdding(false);
       setNewBill({ title: '', category: '', amount: '', description: '' });
       fetchBills();
-    } catch (e) {
+      toast.success('Bill record saved successfully!');
+    } catch (e: any) {
       console.error(e);
-      alert('Failed to add bill');
+      toast.error(e.response?.data?.error || 'Failed to add bill');
     }
   };
 
@@ -48,9 +51,10 @@ export default function Bills() {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchBills();
-    } catch (e) {
+      toast.success('Bill paid successfully!');
+    } catch (e: any) {
       console.error(e);
-      alert('Failed to pay bill');
+      toast.error(e.response?.data?.error || 'Failed to pay bill');
     }
   };
 
@@ -61,9 +65,10 @@ export default function Bills() {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchBills();
-    } catch (e) {
+      toast.success('Bill record deleted successfully!');
+    } catch (e: any) {
       console.error(e);
-      alert('Failed to delete bill');
+      toast.error(e.response?.data?.error || 'Failed to delete bill');
     }
   };
 

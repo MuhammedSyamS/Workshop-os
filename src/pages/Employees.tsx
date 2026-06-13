@@ -3,9 +3,11 @@ import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
+import { useToast } from '../context/AppContext';
 
 export default function Employees() {
   const { token } = useAuthStore();
+  const toast = useToast();
   const [employees, setEmployees] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
@@ -39,9 +41,10 @@ export default function Employees() {
       setIsAdding(false);
       setNewEmp({ userId: '', name: '', role: '', phone: '', email: '', specialization: '', salary: '', password: '' });
       fetchEmployees();
-    } catch (e) {
+      toast.success('Employee added successfully!');
+    } catch (e: any) {
       console.error(e);
-      alert('Failed to add employee');
+      toast.error(e.response?.data?.error || 'Failed to add employee');
     }
   };
 
@@ -51,9 +54,10 @@ export default function Employees() {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchEmployees();
-    } catch (e) {
+      toast.success(`Successfully marked attendance as ${status}`);
+    } catch (e: any) {
       console.error(e);
-      alert('Failed to mark attendance');
+      toast.error(e.response?.data?.error || 'Failed to mark attendance');
     }
   };
 
@@ -65,7 +69,7 @@ export default function Employees() {
       setHistoryModal({ isOpen: true, employee: emp, history: res.data });
     } catch (e) {
       console.error(e);
-      alert('Failed to fetch history');
+      toast.error('Failed to fetch history');
     }
   };
 
@@ -75,9 +79,10 @@ export default function Employees() {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchEmployees();
+      toast.success('Employee approved successfully!');
     } catch (e) {
       console.error(e);
-      alert('Failed to approve employee');
+      toast.error('Failed to approve employee');
     }
   };
 

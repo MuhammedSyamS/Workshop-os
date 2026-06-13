@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useToast } from '../context/AppContext';
 
 const statuses = [
   'Pending Inspection', 'Parts Awaiting', 'In Progress', 
@@ -16,6 +17,7 @@ interface JobCard {
 export default function KanbanItem({ jobCard }: { jobCard: JobCard }) {
   const [currentStatus, setCurrentStatus] = useState(jobCard.status);
   const [isUpdating, setIsUpdating] = useState(false);
+  const toast = useToast();
 
   const handleStatusChange = async (newStatus: string) => {
     setIsUpdating(true);
@@ -31,9 +33,10 @@ export default function KanbanItem({ jobCard }: { jobCard: JobCard }) {
       if (!response.ok) throw new Error('Failed to update');
       
       setCurrentStatus(newStatus);
+      toast.success('Status updated successfully!');
     } catch (error) {
       console.error('Error updating job status:', error);
-      alert('Error updating status');
+      toast.error('Error updating status');
     } finally {
       setIsUpdating(false);
     }

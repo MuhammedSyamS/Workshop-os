@@ -3,9 +3,11 @@ import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
+import { useToast } from '../context/AppContext';
 
 export function CustomerBills() {
   const { token } = useAuthStore();
+  const toast = useToast();
   const [bills, setBills] = useState<any[]>([]);
   const [jobs, setJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -45,9 +47,15 @@ export function CustomerBills() {
   };
 
   const generateBill = async () => {
-    if (!billModal.jobId) return alert('Please select a Job Order');
+    if (!billModal.jobId) {
+      toast.warning('Please select a Job Order');
+      return;
+    }
     const validItems = billModal.lineItems.filter((item: any) => item.description.trim() !== '');
-    if (validItems.length === 0) return alert('Please add at least one valid line item with a description.');
+    if (validItems.length === 0) {
+      toast.warning('Please add at least one valid line item with a description.');
+      return;
+    }
 
     try {
       await axios.post(`/api/invoices`, {
@@ -58,12 +66,12 @@ export function CustomerBills() {
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      alert('Bill Generated Successfully!');
+      toast.success('Bill Generated Successfully!');
       setBillModal(null);
       fetchBills();
     } catch (e) {
       console.error(e);
-      alert('Failed to generate bill');
+      toast.error('Failed to generate bill');
     }
   };
 

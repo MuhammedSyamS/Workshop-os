@@ -3,9 +3,11 @@ import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
+import { useToast } from '../context/AppContext';
 
 export function Schedule() {
   const { token } = useAuthStore();
+  const toast = useToast();
   const [appointments, setAppointments] = useState<any[]>([]);
   const [customers, setCustomers] = useState<any[]>([]);
   const [vehicles, setVehicles] = useState<any[]>([]);
@@ -36,15 +38,17 @@ export function Schedule() {
 
   const handleBookSlot = async () => {
     if (!newAppt.customer_id || !newAppt.vehicle_id || !newAppt.appointment_date) {
-      return alert('Please select a customer, vehicle, and date.');
+      toast.warning('Please select a customer, vehicle, and date.');
+      return;
     }
     try {
       await axios.post(`/api/appointments`, newAppt, { headers: { Authorization: `Bearer ${token}` }});
       setAddModal(false);
       setNewAppt({ customer_id: '', vehicle_id: '', appointment_date: '', service_type: '', notes: '' });
       fetchData();
+      toast.success('Appointment booked successfully!');
     } catch (e: any) {
-      alert(e.response?.data?.error || 'Failed to book appointment');
+      toast.error(e.response?.data?.error || 'Failed to book appointment');
     }
   };
 

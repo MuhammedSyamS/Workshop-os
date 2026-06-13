@@ -3,9 +3,11 @@ import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
+import { useToast } from '../context/AppContext';
 
 export function Inventory() {
   const { token } = useAuthStore();
+  const toast = useToast();
   const [parts, setParts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [addModal, setAddModal] = useState(false);
@@ -33,8 +35,9 @@ export function Inventory() {
       setAddModal(false);
       setNewPart({ name: '', sku: '', stock_qty: '', unit_cost: '', reorder_level: '' });
       fetchParts();
+      toast.success('Part added successfully!');
     } catch (e: any) {
-      alert(e.response?.data?.error || 'Failed to add part');
+      toast.error(e.response?.data?.error || 'Failed to add part');
     }
   };
 

@@ -1,11 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import { Wrench, Eye, EyeOff } from 'lucide-react';
+import { Wrench, Eye, EyeOff, Wifi, WifiOff } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
+
+const LOADING_MESSAGES = [
+  { after: 0,     text: 'Connecting to server...' },
+  { after: 4000,  text: 'Establishing database link...' },
+  { after: 9000,  text: 'Waking up server (first login may take ~30s)...' },
+  { after: 16000, text: 'Almost there, please wait...' },
+];
 
 export default function Login() {
   const [loginType, setLoginType] = useState<'ADMIN' | 'EMPLOYEE'>('ADMIN');
@@ -14,32 +21,45 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  
+  const [loadingMsg, setLoadingMsg] = useState('');
+
   const navigate = useNavigate();
   const setAuth = useAuthStore(state => state.setAuth);
+
+  // Pre-warm the server as soon as the login page opens
+  useEffect(() => {
+    axios.get('/api/health', { timeout: 35000 }).catch(() => {});
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
+    setLoadingMsg(LOADING_MESSAGES[0].text);
+
+    // Cycle through progress messages while waiting
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    LOADING_MESSAGES.slice(1).forEach(({ after, text }) => {
+      timers.push(setTimeout(() => setLoadingMsg(text), after));
+    });
+
+    const clearTimers = () => timers.forEach(clearTimeout);
 
     try {
-      // Attempt to create default admin account (silently ignored if already exists)
-      if (userId === 'admin' && password === 'admin123') {
-        try { await axios.post(`/api/auth/setup`); } catch { /* ignore */ }
-      }
-
-      const res = await axios.post(`/api/auth/login`, { userId, password }, { timeout: 10000 });
+      const res = await axios.post(`/api/auth/login`, { userId, password }, { timeout: 40000 });
+      clearTimers();
       const user = res.data.user;
 
       if (loginType === 'ADMIN' && user.role !== 'OWNER' && user.role !== 'ADMIN') {
-        setError('Access Denied: You are trying to log into the Admin portal, but your account is registered as an Employee. Please click the "Employee" tab above to log in.');
+        setError('Access Denied: Your account is an Employee. Please click the "Employee" tab to log in.');
         setIsLoading(false);
+        setLoadingMsg('');
         return;
       }
       if (loginType === 'EMPLOYEE' && (user.role === 'OWNER' || user.role === 'ADMIN')) {
-        setError('Access Denied: You are trying to log into the Employee portal, but you are an Admin. Please click the "Admin" tab above to log in.');
+        setError('Access Denied: Your account is an Admin. Please click the "Admin" tab to log in.');
         setIsLoading(false);
+        setLoadingMsg('');
         return;
       }
 
@@ -48,13 +68,15 @@ export default function Login() {
       navigate(`/splash?to=${dest}`);
 
     } catch (err: any) {
+      clearTimers();
       if (!err.response) {
-        setError('Cannot connect to server. Please check your connection and try again.');
+        setError('Server is unreachable. If this is your first login today, the server may still be waking up — please wait 30 seconds and try again.');
       } else {
         setError(err.response?.data?.error || 'Authentication failed. Check your credentials.');
       }
     } finally {
       setIsLoading(false);
+      setLoadingMsg('');
     }
   };
 
@@ -63,7 +85,7 @@ export default function Login() {
       {/* Decorative blobs */}
       <div className="absolute top-0 left-0 w-72 h-72 sm:w-96 sm:h-96 bg-blue-500/20 rounded-full blur-[80px] sm:blur-[100px] -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-72 h-72 sm:w-96 sm:h-96 bg-purple-500/20 rounded-full blur-[80px] sm:blur-[100px] translate-x-1/3 translate-y-1/3 pointer-events-none" />
-      
+
       <div className="w-full max-w-[380px] sm:max-w-md mx-auto relative z-10">
         <div className="bg-white/95 backdrop-blur-xl p-5 sm:p-8 rounded-2xl shadow-2xl border border-white/20 relative overflow-hidden">
 
@@ -122,24 +144,30 @@ export default function Login() {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter password"
                   rightElement={
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="hover:text-blue-600 focus:outline-none"
-                    >
+                    <button type="button" onClick={() => setShowPassword(!showPassword)} className="hover:text-blue-600 focus:outline-none">
                       {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                     </button>
                   }
                 />
 
-                {error && (
-                  <div className="p-3 bg-red-50 border border-red-200 text-red-600 text-xs sm:text-sm font-medium rounded-lg leading-snug">
-                    {error}
+                {/* Loading status message */}
+                {isLoading && loadingMsg && (
+                  <div className="flex items-center gap-2.5 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <Wifi size={15} className="text-blue-500 shrink-0 animate-pulse" />
+                    <p className="text-xs text-blue-700 font-medium leading-snug">{loadingMsg}</p>
+                  </div>
+                )}
+
+                {/* Error message */}
+                {error && !isLoading && (
+                  <div className="flex items-start gap-2.5 p-3 bg-red-50 border border-red-200 rounded-lg">
+                    <WifiOff size={15} className="text-red-500 shrink-0 mt-0.5" />
+                    <p className="text-xs sm:text-sm text-red-600 font-medium leading-snug">{error}</p>
                   </div>
                 )}
 
                 <Button type="submit" className="w-full mt-1" isLoading={isLoading}>
-                  AUTHENTICATE
+                  {isLoading ? 'AUTHENTICATING...' : 'AUTHENTICATE'}
                 </Button>
 
                 <div className="flex justify-between items-center mt-3 text-xs sm:text-sm text-slate-500">

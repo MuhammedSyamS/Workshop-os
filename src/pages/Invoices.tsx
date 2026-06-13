@@ -3,9 +3,11 @@ import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
+import { useToast } from '../context/AppContext';
 
 export function Invoices() {
   const { token } = useAuthStore();
+  const toast = useToast();
   const [invoices, setInvoices] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [jobs, setJobs] = useState<any[]>([]);
@@ -46,9 +48,15 @@ export function Invoices() {
   };
 
   const generateInvoice = async () => {
-    if (!invoiceModal.jobId) return alert('Please select a Job Order');
+    if (!invoiceModal.jobId) {
+      toast.warning('Please select a Job Order');
+      return;
+    }
     const validItems = invoiceModal.lineItems.filter((item: any) => item.description.trim() !== '');
-    if (validItems.length === 0) return alert('Please add at least one valid line item with a description.');
+    if (validItems.length === 0) {
+      toast.warning('Please add at least one valid line item with a description.');
+      return;
+    }
 
     try {
       await axios.post(`/api/invoices`, {
@@ -59,12 +67,12 @@ export function Invoices() {
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      alert('Invoice Generated Successfully!');
+      toast.success('Invoice Generated Successfully!');
       setInvoiceModal(null);
       fetchInvoices();
     } catch (e) {
       console.error(e);
-      alert('Failed to generate invoice');
+      toast.error('Failed to generate invoice');
     }
   };
 

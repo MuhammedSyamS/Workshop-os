@@ -3,9 +3,11 @@ import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
+import { useToast } from '../context/AppContext';
 
 export function Customers() {
   const { token } = useAuthStore();
+  const toast = useToast();
   const [customers, setCustomers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   
@@ -39,8 +41,9 @@ export function Customers() {
       setAddCustomerModal(false);
       setNewCustomer({ name: '', phone: '', email: '', address: '' });
       fetchCustomers();
+      toast.success('Customer added successfully!');
     } catch (e: any) {
-      alert(e.response?.data?.error || 'Failed to add customer');
+      toast.error(e.response?.data?.error || 'Failed to add customer');
     }
   };
 
@@ -134,6 +137,7 @@ export function Customers() {
 
 export function Vehicles() {
   const { token } = useAuthStore();
+  const toast = useToast();
   const [vehicles, setVehicles] = useState<any[]>([]);
   const [customers, setCustomers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -164,8 +168,9 @@ export function Vehicles() {
       setAddModal(false);
       setNewVeh({ customer_id: '', reg_number: '', make: '', model: '', year: '', color: '' });
       fetchData();
+      toast.success('Vehicle added successfully!');
     } catch (e: any) {
-      alert(e.response?.data?.error || 'Failed to add vehicle');
+      toast.error(e.response?.data?.error || 'Failed to add vehicle');
     }
   };
 

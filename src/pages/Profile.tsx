@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuthStore } from '../store/authStore';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
+import { useToast } from '../context/AppContext';
 
 export function Profile() {
   const { user, token } = useAuthStore();
+  const toast = useToast();
   const [history, setHistory] = useState<any[]>([]);
   const [todayAttendance, setTodayAttendance] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -58,8 +60,9 @@ export function Profile() {
         headers: { Authorization: `Bearer ${token}` }
       });
       setAvatar(base64);
+      toast.success('Avatar uploaded successfully!');
     } catch(e) {
-      alert('Failed to upload avatar');
+      toast.error('Failed to upload avatar');
     }
   };
 
@@ -102,8 +105,9 @@ export function Profile() {
       });
       fetchTodayAttendance();
       fetchHistory();
+      toast.success(action === 'MARK_IN' ? 'Successfully marked in!' : 'Successfully marked out!');
     } catch (e: any) {
-      alert(e.response?.data?.error || 'Failed to mark attendance');
+      toast.error(e.response?.data?.error || 'Failed to mark attendance');
     }
   };
 
