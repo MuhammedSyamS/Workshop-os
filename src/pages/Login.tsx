@@ -45,13 +45,14 @@ export default function Login() {
         }
 
         setAuth(res.data.token, user);
-        navigate(user.role === 'OWNER' || user.role === 'ADMIN' ? '/dashboard' : '/profile');
+        const dest = (user.role === 'OWNER' || user.role === 'ADMIN') ? '/dashboard' : '/profile';
+        navigate(`/splash?to=${dest}`);
       } catch (err: any) {
         // Network error, CORS issue, or DB timeout (Internal server error)
         if (userId === 'admin' && password === 'admin123' && loginType === 'ADMIN') {
            console.warn("Backend unreachable or errored, falling back to mock login.");
            setAuth('mock-token', { id: '1', name: 'System Admin', role: 'OWNER', userId: 'admin' });
-           navigate('/dashboard');
+           navigate('/splash?to=/dashboard');
            return;
         }
 

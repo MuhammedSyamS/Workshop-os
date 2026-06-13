@@ -1,0 +1,317 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Share+Tech+Mono&display=swap');
+
+/* ══════════════════════════════════════════
+   ROOT
+══════════════════════════════════════════ */
+.spl-root {
+  position: fixed; inset: 0;
+  background: #07070f;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  z-index: 9999;
+  font-family: 'Inter', sans-serif;
+  transition: opacity .9s ease, transform .9s ease;
+}
+.spl-fadeout {
+  opacity: 0;
+  transform: scale(1.06);
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════════════
+   CANVAS (particles)
+══════════════════════════════════════════ */
+.spl-canvas {
+  position: absolute; inset: 0;
+  pointer-events: none; z-index: 0;
+}
+
+/* ══════════════════════════════════════════
+   BACKGROUND GLOWS
+══════════════════════════════════════════ */
+.spl-glow {
+  position: absolute; border-radius: 50%;
+  filter: blur(130px); pointer-events: none; z-index: 0;
+  animation: spl-glow-pulse 5s ease-in-out infinite;
+}
+.spl-glow-1 {
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(249,115,22,.10) 0%, transparent 70%);
+  bottom: -300px; left: -200px;
+  animation-delay: 0s;
+}
+.spl-glow-2 {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(220,38,38,.07) 0%, transparent 70%);
+  bottom: -250px; right: -150px;
+  animation-delay: 2s;
+}
+.spl-glow-3 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(99,102,241,.06) 0%, transparent 70%);
+  top: -200px; left: 50%; transform: translateX(-50%);
+  animation-delay: 1s;
+}
+@keyframes spl-glow-pulse {
+  0%,100% { opacity: .7; }
+  50%      { opacity: 1; }
+}
+
+/* ══════════════════════════════════════════
+   SUBTLE DOT GRID
+══════════════════════════════════════════ */
+.spl-grid {
+  position: absolute; inset: 0; z-index: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 36px 36px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════════════
+   STAGE (centered content)
+══════════════════════════════════════════ */
+.spl-stage {
+  position: relative; z-index: 10;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+  padding: 0 20px;
+  animation: spl-stage-in .8s ease both;
+}
+@keyframes spl-stage-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ══════════════════════════════════════════
+   RING SECTION
+══════════════════════════════════════════ */
+.spl-ring-wrap {
+  position: relative;
+  width: 210px; height: 210px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 30px;
+}
+
+/* Outermost slow-spinning decorative ring */
+.spl-ring-deco {
+  position: absolute; inset: -14px;
+  border-radius: 50%;
+  border: 1px dashed rgba(249,115,22,.18);
+  animation: spl-spin-slow 18s linear infinite;
+}
+.spl-ring-deco::before {
+  content: '';
+  position: absolute; top: 50%; left: 0;
+  width: 7px; height: 7px;
+  background: #f97316;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px #f97316, 0 0 20px #f97316;
+}
+
+/* Mid decorative ring */
+.spl-ring-mid {
+  position: absolute; inset: -5px;
+  border-radius: 50%;
+  border: 1px solid rgba(249,115,22,.08);
+  animation: spl-spin-slow 10s linear infinite reverse;
+}
+
+/* SVG progress ring */
+.spl-ring-svg {
+  position: absolute; inset: 0;
+  transform: rotate(-90deg);
+}
+
+/* Icon container */
+.spl-icon-center {
+  position: relative; z-index: 2;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px;
+}
+
+/* Icon box */
+.spl-icon-box {
+  width: 66px; height: 66px;
+  background: linear-gradient(135deg, rgba(249,115,22,.2), rgba(220,38,38,.1));
+  border: 1px solid rgba(249,115,22,.35);
+  border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 30px rgba(249,115,22,.25), inset 0 0 20px rgba(249,115,22,.05);
+  animation: spl-icon-pulse 2.5s ease-in-out infinite;
+}
+@keyframes spl-icon-pulse {
+  0%,100% { box-shadow: 0 0 30px rgba(249,115,22,.25), inset 0 0 20px rgba(249,115,22,.05); }
+  50%      { box-shadow: 0 0 50px rgba(249,115,22,.45), inset 0 0 30px rgba(249,115,22,.1); }
+}
+
+/* Percentage inside ring */
+.spl-pct-inner {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px; font-weight: 700;
+  color: rgba(249,115,22,.8);
+  letter-spacing: 1px;
+}
+
+/* ══════════════════════════════════════════
+   BRAND TEXT
+══════════════════════════════════════════ */
+.spl-brand-name {
+  font-size: clamp(22px, 4vw, 32px);
+  font-weight: 900;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #fff 0%, #f97316 50%, #fbbf24 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 6px;
+  line-height: 1.1;
+}
+.spl-brand-sub {
+  font-size: 10px;
+  font-weight: 500;
+  color: rgba(255,255,255,.3);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+}
+
+/* ══════════════════════════════════════════
+   STEP INDICATORS
+══════════════════════════════════════════ */
+.spl-steps {
+  display: flex; align-items: center; gap: 0;
+  margin-bottom: 24px;
+}
+.spl-step {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  opacity: .28; transition: opacity .4s ease;
+  position: relative;
+}
+.spl-step + .spl-step::before {
+  content: '';
+  position: absolute; right: 100%; top: 10px;
+  width: 32px; height: 1px;
+  background: rgba(249,115,22,.2);
+  transition: background .4s ease;
+}
+.spl-step.active { opacity: .6; }
+.spl-step.done   { opacity: 1; }
+.spl-step.done + .spl-step::before { background: rgba(249,115,22,.5); }
+
+.spl-step-dot {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(249,115,22,.3);
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(249,115,22,.06);
+  transition: all .3s ease;
+  flex-shrink: 0;
+}
+.spl-step.active .spl-step-dot {
+  border-color: rgba(249,115,22,.7);
+  background: rgba(249,115,22,.12);
+  box-shadow: 0 0 10px rgba(249,115,22,.3);
+  animation: spl-dot-ping .9s ease-in-out infinite;
+}
+.spl-step.done .spl-step-dot {
+  border-color: #10b981;
+  background: rgba(16,185,129,.15);
+  box-shadow: 0 0 8px rgba(16,185,129,.3);
+}
+@keyframes spl-dot-ping {
+  0%,100% { box-shadow: 0 0 8px rgba(249,115,22,.25); }
+  50%      { box-shadow: 0 0 18px rgba(249,115,22,.55); }
+}
+
+.spl-step-label {
+  font-size: 9px;
+  font-weight: 500;
+  color: rgba(255,255,255,.5);
+  letter-spacing: .5px;
+  white-space: nowrap;
+}
+.spl-step.done .spl-step-label { color: rgba(16,185,129,.8); }
+.spl-step.active .spl-step-label { color: rgba(249,115,22,.8); }
+
+/* Step spacer line between dots */
+.spl-step-line {
+  width: 32px; height: 1px;
+  background: rgba(249,115,22,.15);
+  flex-shrink: 0;
+  margin-bottom: 16px; /* align to dot vertically */
+  transition: background .4s ease;
+}
+.spl-step-line.done { background: rgba(249,115,22,.45); }
+
+/* ══════════════════════════════════════════
+   STATUS TEXT
+══════════════════════════════════════════ */
+.spl-status-text {
+  font-size: 11px;
+  color: rgba(255,255,255,.35);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  font-family: 'Share Tech Mono', monospace;
+  height: 14px;
+  transition: color .4s;
+}
+.spl-status-text.ready {
+  color: #10b981;
+  text-shadow: 0 0 10px rgba(16,185,129,.5);
+}
+
+/* ══════════════════════════════════════════
+   BOTTOM PROGRESS BAR
+══════════════════════════════════════════ */
+.spl-bar-wrap {
+  width: min(440px, 88vw);
+  display: flex; align-items: center; gap: 12px;
+}
+.spl-bar-track {
+  flex: 1; height: 3px;
+  background: rgba(255,255,255,.07);
+  border-radius: 2px; overflow: hidden;
+}
+.spl-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #dc2626, #f97316, #fbbf24);
+  border-radius: 2px;
+  transition: width .12s ease-out;
+  box-shadow: 0 0 8px rgba(249,115,22,.7);
+  position: relative;
+}
+.spl-bar-fill::after {
+  content: '';
+  position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 6px #f97316, 0 0 12px rgba(249,115,22,.6);
+}
+.spl-bar-pct {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px; font-weight: 700;
+  color: #f97316; min-width: 34px; text-align: right;
+}
+
+/* ══════════════════════════════════════════
+   SUCCESS FLASH (on complete)
+══════════════════════════════════════════ */
+.spl-success-ring {
+  animation: spl-success-glow .6s ease forwards;
+}
+@keyframes spl-success-glow {
+  0%   { filter: drop-shadow(0 0 0 #10b981); }
+  50%  { filter: drop-shadow(0 0 12px #10b981); }
+  100% { filter: drop-shadow(0 0 4px #10b981); }
+}
+
+/* ══════════════════════════════════════════
+   SHARED KEYFRAMES
+══════════════════════════════════════════ */
+@keyframes spl-spin-slow {
+  from { transform: rotate(0deg);   }
+  to   { transform: rotate(360deg); }
+}
