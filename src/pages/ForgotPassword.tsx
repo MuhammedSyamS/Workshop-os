@@ -37,7 +37,7 @@ export default function ForgotPassword() {
           <div className="w-12 h-12 bg-blue-600 flex items-center justify-center mb-4">
             <Wrench size={24} className="text-white" />
           </div>
-          <h1 className="text-2xl font-heading font-bold text-slate-900 tracking-tight">Workshop OS</h1>
+          <h1 className="text-2xl font-heading font-bold text-slate-900 tracking-tight">Akhil Two Wheelers</h1>
           <p className="text-sm font-body text-slate-500 mt-1">Enterprise Management System</p>
         </div>
 

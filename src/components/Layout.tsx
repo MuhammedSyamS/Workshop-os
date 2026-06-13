@@ -58,7 +58,7 @@ export default function Layout() {
           <div className="w-8 h-8 bg-blue-600 flex items-center justify-center mr-3 rounded-lg shadow-sm">
             <Wrench size={16} className="text-white" />
           </div>
-          <span className="font-heading font-bold tracking-tight text-slate-900">Workshop OS</span>
+          <span className="font-heading font-bold tracking-tight text-slate-900">Akhil Two Wheelers</span>
         </div>
 
         <nav className="flex-1 overflow-y-auto py-4 custom-scrollbar">
@@ -106,7 +106,7 @@ export default function Layout() {
             <div className="w-9 h-9 bg-white/20 backdrop-blur-sm flex items-center justify-center rounded-xl shadow-inner border border-white/10">
               <Wrench size={18} className="text-white" />
             </div>
-            <span className="font-heading font-bold text-lg tracking-tight drop-shadow-sm">Workshop OS</span>
+            <span className="font-heading font-bold text-lg tracking-tight drop-shadow-sm">Akhil Two Wheelers</span>
           </div>
           
           <div className="hidden lg:block font-heading font-semibold text-lg text-slate-800 capitalize">

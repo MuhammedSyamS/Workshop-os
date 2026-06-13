@@ -81,8 +81,8 @@ export default function Login() {
           <div className="w-14 h-14 bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center mb-4 rounded-2xl shadow-lg border border-white/10">
             <Wrench size={28} className="text-white" />
           </div>
-          <h1 className="text-3xl font-heading font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-slate-700 tracking-tight">Workshop OS</h1>
-          <p className="text-sm font-bold tracking-widest text-blue-600/80 mt-1 uppercase">Enterprise Management</p>
+          <h1 className="text-xl font-heading font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-slate-900 to-slate-700 tracking-tight whitespace-nowrap">Akhil Two Wheelers</h1>
+          <p className="text-xs font-bold tracking-widest text-blue-600/80 mt-0.5 uppercase">Workshop Management</p>
         </div>
 
         <Card>
